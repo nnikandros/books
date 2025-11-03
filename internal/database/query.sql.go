@@ -11,14 +11,15 @@ import (
 )
 
 const addBook = `-- name: AddBook :exec
-INSERT INTO books (title,author,publication_date,rating)
-VALUES (?,?,?,?)
+INSERT INTO books (title,author,publication_date,finished_date,rating)
+VALUES (?,?,?,?,?)
 `
 
 type AddBookParams struct {
 	Title           string
 	Author          string
 	PublicationDate sql.NullTime
+	FinishedDate    sql.NullTime
 	Rating          sql.NullString
 }
 
@@ -27,13 +28,14 @@ func (q *Queries) AddBook(ctx context.Context, arg AddBookParams) error {
 		arg.Title,
 		arg.Author,
 		arg.PublicationDate,
+		arg.FinishedDate,
 		arg.Rating,
 	)
 	return err
 }
 
 const getAllBooks = `-- name: GetAllBooks :many
-select id, title, author, publication_date, rating
+select id, title, author, publication_date, finished_date, rating
 from books
 `
 
@@ -51,6 +53,154 @@ func (q *Queries) GetAllBooks(ctx context.Context) ([]Book, error) {
 			&i.Title,
 			&i.Author,
 			&i.PublicationDate,
+			&i.FinishedDate,
+			&i.Rating,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getBooksByAuthor = `-- name: GetBooksByAuthor :many
+SELECT id, title, author, publication_date, finished_date, rating
+FROM books
+WHERE author=?
+`
+
+func (q *Queries) GetBooksByAuthor(ctx context.Context, author string) ([]Book, error) {
+	rows, err := q.db.QueryContext(ctx, getBooksByAuthor, author)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Book
+	for rows.Next() {
+		var i Book
+		if err := rows.Scan(
+			&i.ID,
+			&i.Title,
+			&i.Author,
+			&i.PublicationDate,
+			&i.FinishedDate,
+			&i.Rating,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getBooksByAuthorSortedByFinishedDate = `-- name: GetBooksByAuthorSortedByFinishedDate :many
+SELECT id, title, author, publication_date, finished_date, rating
+FROM books
+WHERE author=?
+ORDER BY finished_date ASC
+`
+
+func (q *Queries) GetBooksByAuthorSortedByFinishedDate(ctx context.Context, author string) ([]Book, error) {
+	rows, err := q.db.QueryContext(ctx, getBooksByAuthorSortedByFinishedDate, author)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Book
+	for rows.Next() {
+		var i Book
+		if err := rows.Scan(
+			&i.ID,
+			&i.Title,
+			&i.Author,
+			&i.PublicationDate,
+			&i.FinishedDate,
+			&i.Rating,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getBooksByAuthorSortedByFinishedDatev2 = `-- name: GetBooksByAuthorSortedByFinishedDatev2 :many
+SELECT id, title, author, publication_date, finished_date, rating
+FROM books
+WHERE author=?
+ORDER BY finished_date DESC
+`
+
+func (q *Queries) GetBooksByAuthorSortedByFinishedDatev2(ctx context.Context, author string) ([]Book, error) {
+	rows, err := q.db.QueryContext(ctx, getBooksByAuthorSortedByFinishedDatev2, author)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Book
+	for rows.Next() {
+		var i Book
+		if err := rows.Scan(
+			&i.ID,
+			&i.Title,
+			&i.Author,
+			&i.PublicationDate,
+			&i.FinishedDate,
+			&i.Rating,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getBooksByAuthorSortedByPublicationDate = `-- name: GetBooksByAuthorSortedByPublicationDate :many
+SELECT id, title, author, publication_date, finished_date, rating
+FROM books
+WHERE author=?
+ORDER BY publication_date
+`
+
+func (q *Queries) GetBooksByAuthorSortedByPublicationDate(ctx context.Context, author string) ([]Book, error) {
+	rows, err := q.db.QueryContext(ctx, getBooksByAuthorSortedByPublicationDate, author)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Book
+	for rows.Next() {
+		var i Book
+		if err := rows.Scan(
+			&i.ID,
+			&i.Title,
+			&i.Author,
+			&i.PublicationDate,
+			&i.FinishedDate,
 			&i.Rating,
 		); err != nil {
 			return nil, err

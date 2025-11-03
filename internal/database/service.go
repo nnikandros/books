@@ -14,30 +14,30 @@ import (
 )
 
 // Service represents a service that interacts with a database.
-type Service interface {
-	// Health returns a map of health status information.
-	// The keys and values in the map are service-specific.
-	Health() map[string]string
+// type Service interface {
+// 	// Health returns a map of health status information.
+// 	// The keys and values in the map are service-specific.
+// 	Health() map[string]string
 
-	// Close terminates the database connection.
-	// It returns an error if the connection cannot be closed.
-	Close() error
-}
+// 	// Close terminates the database connection.
+// 	// It returns an error if the connection cannot be closed.
+// 	Close() error
+// }
 
-type service struct {
+type Service struct {
 	db      *sql.DB
 	Queries *Queries
 }
 
 var (
 	dburl      = os.Getenv("BLUEPRINT_DB_URL")
-	dbInstance *service
+	dbInstance *sql.DB
 )
 
 func NewService() Service {
 	// Reuse Connection
 	if dbInstance != nil {
-		return dbInstance
+		return Service{db: dbInstance, Queries: New(dbInstance)}
 	}
 
 	db, err := sql.Open("sqlite3", dburl)
@@ -47,7 +47,7 @@ func NewService() Service {
 		log.Fatal(err)
 	}
 
-	dbInstance = &service{
+	dbInstance := Service{
 		db:      db,
 		Queries: New(db),
 	}
@@ -56,7 +56,7 @@ func NewService() Service {
 
 // Health checks the health of the database connection by pinging the database.
 // It returns a map with keys indicating various health statistics.
-func (s *service) Health() map[string]string {
+func (s *Service) Health() map[string]string {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 
@@ -109,7 +109,7 @@ func (s *service) Health() map[string]string {
 // It logs a message indicating the disconnection from the specific database.
 // If the connection is successfully closed, it returns nil.
 // If an error occurs while closing the connection, it returns the error.
-func (s *service) Close() error {
+func (s *Service) Close() error {
 	log.Printf("Disconnected from database: %s", dburl)
 	return s.db.Close()
 }

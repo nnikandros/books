@@ -23,6 +23,11 @@ clean:
 	@echo "Cleaning..."
 	@rm -f main
 
+sqlc:
+	@echo "building sql queries..."
+	@sqlc  generate -f internal/database/sqlc.yaml
+
+
 # Live Reload
 watch:
 	@if command -v air > /dev/null; then \
@@ -41,3 +46,4 @@ watch:
         fi
 
 .PHONY: all build run test clean watch
+

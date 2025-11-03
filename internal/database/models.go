@@ -13,5 +13,6 @@ type Book struct {
 	Title           string
 	Author          string
 	PublicationDate sql.NullTime
+	FinishedDate    sql.NullTime
 	Rating          sql.NullString
 }

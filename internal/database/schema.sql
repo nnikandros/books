@@ -3,5 +3,6 @@ CREATE TABLE books(
     title VARCHAR(100) NOT NULL,
     author  TEXT NOT NULL,
     publication_date DATE,
+    finished_date DATE,
     rating TEXT
 );
