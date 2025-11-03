@@ -1,4 +1,4 @@
-module books2
+module books
 
 go 1.24.4
 
