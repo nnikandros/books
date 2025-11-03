@@ -7,7 +7,7 @@ package database
 
 import (
 	"context"
-	"database/sql"
+	"time"
 )
 
 const addBook = `-- name: AddBook :exec
@@ -18,9 +18,9 @@ VALUES (?,?,?,?,?)
 type AddBookParams struct {
 	Title           string
 	Author          string
-	PublicationDate sql.NullTime
-	FinishedDate    sql.NullTime
-	Rating          sql.NullString
+	PublicationDate time.Time
+	FinishedDate    time.Time
+	Rating          string
 }
 
 func (q *Queries) AddBook(ctx context.Context, arg AddBookParams) error {

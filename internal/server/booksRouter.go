@@ -2,7 +2,10 @@ package server
 
 import (
 	"books/internal/database"
+	"fmt"
+	"log"
 	"net/http"
+	"serde"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -23,10 +26,21 @@ func (b *BooksRouter) Routes() chi.Router {
 }
 
 func (b *BooksRouter) ListBooks(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("List of books"))
+	l, err := b.db.Queries.GetAllBooks(r.Context())
+	if err != nil {
+		http.Error(w, "someting bad happend", http.StatusBadRequest)
+	}
+
+	err = serde.EncodeJson(w, http.StatusOK, l)
+	fmt.Println(err)
 }
 
 func (b *BooksRouter) CreateBook(w http.ResponseWriter, r *http.Request) {
+	book := database.AddBookParams{}
+	err := b.db.Queries.AddBook(r.Context(), book)
+	if err != nil {
+		log.Printf("b.db.Queries.AddBook %w", err)
+	}
 	w.Write([]byte("Book created"))
 }
 

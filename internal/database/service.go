@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"database/sql"
+	_ "embed"
 	"fmt"
 	"log"
 	"os"
@@ -13,16 +14,8 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-// Service represents a service that interacts with a database.
-// type Service interface {
-// 	// Health returns a map of health status information.
-// 	// The keys and values in the map are service-specific.
-// 	Health() map[string]string
-
-// 	// Close terminates the database connection.
-// 	// It returns an error if the connection cannot be closed.
-// 	Close() error
-// }
+//go:embed schema.sql
+var ddl string
 
 type Service struct {
 	db      *sql.DB
@@ -44,6 +37,10 @@ func NewService() Service {
 	if err != nil {
 		// This will not be a connection error, but a DSN parse error or
 		// another initialization error.
+		log.Fatal(err)
+	}
+
+	if _, err := db.ExecContext(context.Background(), ddl); err != nil {
 		log.Fatal(err)
 	}
 

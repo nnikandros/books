@@ -5,14 +5,14 @@
 package database
 
 import (
-	"database/sql"
+	"time"
 )
 
 type Book struct {
 	ID              int64
 	Title           string
 	Author          string
-	PublicationDate sql.NullTime
-	FinishedDate    sql.NullTime
-	Rating          sql.NullString
+	PublicationDate time.Time
+	FinishedDate    time.Time
+	Rating          string
 }
