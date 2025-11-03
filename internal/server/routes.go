@@ -26,6 +26,9 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	r.Get("/health", s.healthHandler)
 
+	books := BooksRouter{db: s.db}
+	r.Mount("/books", books.Routes())
+
 	return r
 }
 
