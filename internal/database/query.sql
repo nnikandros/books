@@ -32,3 +32,13 @@ SELECT *
 FROM books
 WHERE author=?
 ORDER BY finished_date DESC;
+
+-- name: GetBookById :one
+SELECT *
+FROM books
+WHERE id=?
+LIMIT 1;
+
+-- name: DeleteBookById :exec
+DELETE FROM books
+where id=?;

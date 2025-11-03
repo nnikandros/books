@@ -27,7 +27,6 @@ sqlc:
 	@echo "building sql queries..."
 	@sqlc  generate -f internal/database/sqlc.yaml
 
-
 # Live Reload
 watch:
 	@if command -v air > /dev/null; then \
