@@ -33,9 +33,17 @@ func TestBookModelDates(t *testing.T) {
 		t.Fatalf("parsing %v", err)
 	}
 	fmt.Println(time1.Month())
+	// json.Unmarshal()
 
-	// b := BookModel{PublicationDate: time1}
+	w, err := time1.MarshalJSON()
+	if err != nil {
+		t.Fatal(err)
+	}
 
-	fmt.Println(time1.Format(time.DateOnly))
+	fmt.Printf("%s", w)
+
+	// BookModel{Title: "hehello", Author: "thomas", PublicationDate: "2021-12-30"}
+
+	// fmt.Println(time1.Format(time.DateOnly))
 
 }

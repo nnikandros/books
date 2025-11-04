@@ -5,8 +5,8 @@ from books;
 
 
 -- name: AddBook :exec
-INSERT INTO books (title,author,publication_date,finished_date,rating)
-VALUES (?,?,?,?,?);
+INSERT INTO books (title,author,finished_date,rating)
+VALUES (?,?,?,?);
 
 -- name: GetBooksByAuthor :many
 SELECT *

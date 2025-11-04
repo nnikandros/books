@@ -43,7 +43,14 @@ func (b *BooksRouter) CreateBook(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "bad book model", http.StatusBadRequest)
 		return
 	}
-	err = b.db.Queries.AddBook(r.Context(), book.ToAddBookParams())
+
+	p, err := book.ParseBookModel()
+	if err != nil {
+		http.Error(w, "bad book model", http.StatusBadRequest)
+		return
+	}
+
+	err = b.db.Queries.AddBook(r.Context(), p)
 	if err != nil {
 		http.Error(w, "insertign the book in the database", http.StatusInternalServerError)
 		return

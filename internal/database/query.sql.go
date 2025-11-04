@@ -11,23 +11,21 @@ import (
 )
 
 const addBook = `-- name: AddBook :exec
-INSERT INTO books (title,author,publication_date,finished_date,rating)
-VALUES (?,?,?,?,?)
+INSERT INTO books (title,author,finished_date,rating)
+VALUES (?,?,?,?)
 `
 
 type AddBookParams struct {
-	Title           string
-	Author          string
-	PublicationDate time.Time
-	FinishedDate    time.Time
-	Rating          string
+	Title        string
+	Author       string
+	FinishedDate time.Time
+	Rating       string
 }
 
 func (q *Queries) AddBook(ctx context.Context, arg AddBookParams) error {
 	_, err := q.db.ExecContext(ctx, addBook,
 		arg.Title,
 		arg.Author,
-		arg.PublicationDate,
 		arg.FinishedDate,
 		arg.Rating,
 	)
@@ -45,7 +43,7 @@ func (q *Queries) DeleteBookById(ctx context.Context, id int64) error {
 }
 
 const getAllBooks = `-- name: GetAllBooks :many
-select id, title, author, publication_date, finished_date, rating
+select id, title, author, finished_date, rating
 from books
 `
 
@@ -62,7 +60,6 @@ func (q *Queries) GetAllBooks(ctx context.Context) ([]Book, error) {
 			&i.ID,
 			&i.Title,
 			&i.Author,
-			&i.PublicationDate,
 			&i.FinishedDate,
 			&i.Rating,
 		); err != nil {
@@ -80,7 +77,7 @@ func (q *Queries) GetAllBooks(ctx context.Context) ([]Book, error) {
 }
 
 const getBookById = `-- name: GetBookById :one
-SELECT id, title, author, publication_date, finished_date, rating
+SELECT id, title, author, finished_date, rating
 FROM books
 WHERE id=?
 LIMIT 1
@@ -93,7 +90,6 @@ func (q *Queries) GetBookById(ctx context.Context, id int64) (Book, error) {
 		&i.ID,
 		&i.Title,
 		&i.Author,
-		&i.PublicationDate,
 		&i.FinishedDate,
 		&i.Rating,
 	)
@@ -101,7 +97,7 @@ func (q *Queries) GetBookById(ctx context.Context, id int64) (Book, error) {
 }
 
 const getBooksByAuthor = `-- name: GetBooksByAuthor :many
-SELECT id, title, author, publication_date, finished_date, rating
+SELECT id, title, author, finished_date, rating
 FROM books
 WHERE author=?
 `
@@ -119,7 +115,6 @@ func (q *Queries) GetBooksByAuthor(ctx context.Context, author string) ([]Book, 
 			&i.ID,
 			&i.Title,
 			&i.Author,
-			&i.PublicationDate,
 			&i.FinishedDate,
 			&i.Rating,
 		); err != nil {
@@ -137,7 +132,7 @@ func (q *Queries) GetBooksByAuthor(ctx context.Context, author string) ([]Book, 
 }
 
 const getBooksByAuthorSortedByFinishedDate = `-- name: GetBooksByAuthorSortedByFinishedDate :many
-SELECT id, title, author, publication_date, finished_date, rating
+SELECT id, title, author, finished_date, rating
 FROM books
 WHERE author=?
 ORDER BY finished_date ASC
@@ -156,7 +151,6 @@ func (q *Queries) GetBooksByAuthorSortedByFinishedDate(ctx context.Context, auth
 			&i.ID,
 			&i.Title,
 			&i.Author,
-			&i.PublicationDate,
 			&i.FinishedDate,
 			&i.Rating,
 		); err != nil {
@@ -174,7 +168,7 @@ func (q *Queries) GetBooksByAuthorSortedByFinishedDate(ctx context.Context, auth
 }
 
 const getBooksByAuthorSortedByFinishedDatev2 = `-- name: GetBooksByAuthorSortedByFinishedDatev2 :many
-SELECT id, title, author, publication_date, finished_date, rating
+SELECT id, title, author, finished_date, rating
 FROM books
 WHERE author=?
 ORDER BY finished_date DESC
@@ -193,7 +187,6 @@ func (q *Queries) GetBooksByAuthorSortedByFinishedDatev2(ctx context.Context, au
 			&i.ID,
 			&i.Title,
 			&i.Author,
-			&i.PublicationDate,
 			&i.FinishedDate,
 			&i.Rating,
 		); err != nil {
@@ -211,7 +204,7 @@ func (q *Queries) GetBooksByAuthorSortedByFinishedDatev2(ctx context.Context, au
 }
 
 const getBooksByAuthorSortedByPublicationDate = `-- name: GetBooksByAuthorSortedByPublicationDate :many
-SELECT id, title, author, publication_date, finished_date, rating
+SELECT id, title, author, finished_date, rating
 FROM books
 WHERE author=?
 ORDER BY publication_date
@@ -230,7 +223,6 @@ func (q *Queries) GetBooksByAuthorSortedByPublicationDate(ctx context.Context, a
 			&i.ID,
 			&i.Title,
 			&i.Author,
-			&i.PublicationDate,
 			&i.FinishedDate,
 			&i.Rating,
 		); err != nil {

@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"testing"
-	"time"
 )
 
 func TestCheckTableExists(t *testing.T) {
@@ -39,19 +38,19 @@ func TestCheckTableExists(t *testing.T) {
 
 }
 
-func TestModelChanging(t *testing.T) {
-	type Mybook struct {
-		Title           string
-		Author          string
-		PublicationDate time.Time
-		FinishedDate    time.Time
-		Rating          string
-	}
+// func TestModelChanging(t *testing.T) {
+// 	type Mybook struct {
+// 		Title           string
+// 		Author          string
+// 		PublicationDate time.Time
+// 		FinishedDate    time.Time
+// 		Rating          string
+// 	}
 
-	u := Mybook{Title: "hello", Author: "dfgdfgd", Rating: "5/5"}
+// 	u := Mybook{Title: "hello", Author: "dfgdfgd", Rating: "5/5"}
 
-	// b := AddBookParams{}
+// 	// b := AddBookParams{}
 
-	n := AddBookParams(u)
-	fmt.Printf("%+v", n)
-}
+// 	n := AddBookParams(u)
+// 	fmt.Printf("%+v", n)
+// }

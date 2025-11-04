@@ -9,10 +9,9 @@ import (
 )
 
 type Book struct {
-	ID              int64
-	Title           string
-	Author          string
-	PublicationDate time.Time
-	FinishedDate    time.Time
-	Rating          string
+	ID           int64
+	Title        string
+	Author       string
+	FinishedDate time.Time
+	Rating       string
 }
