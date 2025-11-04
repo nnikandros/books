@@ -22,8 +22,8 @@ func TestTimeParsing(t *testing.T) {
 }
 
 func TestBookModelDates(t *testing.T) {
-
-	dateString := "2021-03-11"
+	// year-month-day
+	dateString := "2021-12-30"
 	// time1, err := time.Parse(time.RFC3339, dateString)
 	time1, err := time.Parse(time.DateOnly, dateString)
 	// if err != nil {
@@ -32,7 +32,7 @@ func TestBookModelDates(t *testing.T) {
 	if err != nil {
 		t.Fatalf("parsing %v", err)
 	}
-	fmt.Println(time1)
+	fmt.Println(time1.Month())
 
 	// b := BookModel{PublicationDate: time1}
 
