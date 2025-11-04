@@ -37,12 +37,12 @@ func (b *BooksRouter) ListBooks(w http.ResponseWriter, r *http.Request) {
 
 func (b *BooksRouter) CreateBook(w http.ResponseWriter, r *http.Request) {
 
-	book, err := serde.DecodeV2[database.AddBookParams](r.Body)
+	book, err := serde.DecodeV2[database.BookModel](r.Body)
 	if err != nil {
 		http.Error(w, "bad book model", http.StatusBadRequest)
 		return
 	}
-	err = b.db.Queries.AddBook(r.Context(), book)
+	err = b.db.Queries.AddBook(r.Context(), book.ToAddBookParams())
 	if err != nil {
 		http.Error(w, "insertign the book in the database", http.StatusInternalServerError)
 		return

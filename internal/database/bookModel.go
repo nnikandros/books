@@ -9,3 +9,7 @@ type BookModel struct {
 	FinishedDate    time.Time
 	Rating          string
 }
+
+func (u BookModel) ToAddBookParams() AddBookParams {
+	return AddBookParams(u)
+}
