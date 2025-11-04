@@ -3,9 +3,9 @@ package server
 import (
 	"books/internal/database"
 	"fmt"
-	"log"
 	"net/http"
 	"serde"
+	"strconv"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -36,17 +36,38 @@ func (b *BooksRouter) ListBooks(w http.ResponseWriter, r *http.Request) {
 }
 
 func (b *BooksRouter) CreateBook(w http.ResponseWriter, r *http.Request) {
-	book := database.AddBookParams{}
-	err := b.db.Queries.AddBook(r.Context(), book)
+
+	book, err := serde.DecodeV2[database.AddBookParams](r.Body)
 	if err != nil {
-		log.Printf("b.db.Queries.AddBook %w", err)
+		http.Error(w, "bad book model", http.StatusBadRequest)
+		return
 	}
-	w.Write([]byte("Book created"))
+	err = b.db.Queries.AddBook(r.Context(), book)
+	if err != nil {
+		http.Error(w, "insertign the book in the database", http.StatusInternalServerError)
+		return
+	}
+
 }
 
 func (b *BooksRouter) GetBook(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	w.Write([]byte("Book ID: " + id))
+	id2, err := strconv.Atoi(id)
+	if err != nil {
+		http.Error(w, "bad id", http.StatusBadRequest)
+		return
+	}
+
+	book, err := b.db.Queries.GetBookById(r.Context(), int64(id2))
+	if err != nil {
+		http.Error(w, "error while executign the query", http.StatusInternalServerError)
+		return
+	}
+	err = serde.EncodeJson(w, http.StatusOK, book)
+	if err != nil {
+		http.Error(w, "error while serializing", http.StatusInternalServerError)
+		return
+	}
 }
 
 func (b *BooksRouter) DeleteBook(w http.ResponseWriter, r *http.Request) {
