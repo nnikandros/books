@@ -16,10 +16,10 @@ VALUES (?,?,?,?)
 `
 
 type AddBookParams struct {
-	Title        string
-	Author       string
-	FinishedDate time.Time
-	Rating       string
+	Title        string    `json:"title"`
+	Author       string    `json:"author"`
+	FinishedDate time.Time `json:"finished_date"`
+	Rating       string    `json:"rating"`
 }
 
 func (q *Queries) AddBook(ctx context.Context, arg AddBookParams) error {

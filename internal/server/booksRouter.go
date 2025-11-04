@@ -39,7 +39,7 @@ func (b *BooksRouter) CreateBook(w http.ResponseWriter, r *http.Request) {
 
 	book, err := serde.DecodeV2[database.BookModel](r.Body)
 	if err != nil {
-		fmt.Printf("serde.DecodeV %w", err)
+		fmt.Printf("serde.DecodeV %v", err)
 		http.Error(w, "bad book model", http.StatusBadRequest)
 		return
 	}
@@ -55,6 +55,9 @@ func (b *BooksRouter) CreateBook(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "insertign the book in the database", http.StatusInternalServerError)
 		return
 	}
+
+	w.WriteHeader(http.StatusCreated)
+	w.Write([]byte("created"))
 
 }
 

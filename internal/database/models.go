@@ -9,9 +9,9 @@ import (
 )
 
 type Book struct {
-	ID           int64
-	Title        string
-	Author       string
-	FinishedDate time.Time
-	Rating       string
+	ID           int64     `json:"id"`
+	Title        string    `json:"title"`
+	Author       string    `json:"author"`
+	FinishedDate time.Time `json:"finished_date"`
+	Rating       string    `json:"rating"`
 }
