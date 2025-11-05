@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"serde"
 	"strconv"
+	"text/template"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -17,10 +18,16 @@ type BooksRouter struct {
 func (b *BooksRouter) Routes() chi.Router {
 	r := chi.NewRouter()
 
-	r.Get("/", b.ListBooks)         // GET /books
-	r.Post("/", b.CreateBook)       // POST /books
-	r.Get("/{id}", b.GetBook)       // GET /books/{id}
-	r.Delete("/{id}", b.DeleteBook) // DELETE /books/{id}
+	r.Get("/", b.RenderBooksPage)
+	r.Get("/{id}", b.RenderDetalsPage)
+
+	r.Route("/api", func(r chi.Router) {
+		r.Get("/", b.ListBooks)         // GET /books
+		r.Post("/", b.CreateBook)       // POST /books
+		r.Get("/{id}", b.GetBook)       // GET /books/{id}
+		r.Delete("/{id}", b.DeleteBook) // DELETE /books/{id}
+
+	})
 
 	return r
 }
@@ -89,4 +96,44 @@ func (b *BooksRouter) GetBook(w http.ResponseWriter, r *http.Request) {
 func (b *BooksRouter) DeleteBook(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	w.Write([]byte("Deleted book ID: " + id))
+}
+
+func (b *BooksRouter) RenderBooksPage(w http.ResponseWriter, r *http.Request) {
+	books, err := b.db.Queries.GetAllBooks(r.Context())
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	tmpl := template.Must(template.ParseFiles("templates/books.html"))
+	err = tmpl.Execute(w, map[string]any{
+		"Title": "Books List",
+		"Books": books,
+	})
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func (b *BooksRouter) RenderDetalsPage(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	id2, err := strconv.Atoi(id)
+	if err != nil {
+		http.Error(w, "bad id", http.StatusBadRequest)
+		return
+	}
+
+	book, err := b.db.Queries.GetBookById(r.Context(), int64(id2))
+	if err != nil {
+		http.Error(w, "error while executign the query", http.StatusInternalServerError)
+		return
+	}
+	tmpl := template.Must(template.ParseFiles("templates/book_detail.html"))
+	err = tmpl.Execute(w, map[string]any{
+		"Title": "Book Details",
+		"Book":  book,
+	})
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
