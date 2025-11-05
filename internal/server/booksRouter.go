@@ -31,6 +31,11 @@ func (b *BooksRouter) ListBooks(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "someting bad happend", http.StatusBadRequest)
 	}
 
+	// sliceBooks := make([]database.BookModel, 0, len(l))
+	// for _, i := range l {
+	// 	sliceBooks = append(sliceBooks, database.FromBook(i))
+	// }
+
 	err = serde.EncodeJson(w, http.StatusOK, l)
 	fmt.Println(err)
 }

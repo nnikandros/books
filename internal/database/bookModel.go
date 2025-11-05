@@ -29,3 +29,10 @@ func (u BookModel) ParseBookModel() (AddBookParams, error) {
 
 	return AddBookParams{Title: u.Title, Author: u.Author, FinishedDate: f, Rating: u.Rating}, nil
 }
+
+// experimental. prbalby delete
+func FromBook(b Book) BookModel {
+
+	return BookModel{Author: b.Author, Title: b.Title, FinishedDate: b.FinishedDate.Format(time.DateOnly), Rating: b.Rating}
+
+}
