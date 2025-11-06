@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{{.Title}}</title>
+    <title>My Finished Books</title>
     <style>
         body {
             font-family: sans-serif;
@@ -48,9 +48,9 @@
 </head>
 
 <body>
-    <h1>{{.Title}}</h1>
+    <h1>My Finished Books</h1>
 
-    {{if .Books}}
+    {{if .}}
     <table>
         <thead>
             <tr>
@@ -61,7 +61,7 @@
             </tr>
         </thead>
         <tbody>
-            {{range .Books}}
+            {{range .}}
             <tr>
                 <td>{{.ID}}</td>
                 <td><a href="/books/{{.ID}}">{{.Title}}</a></td>

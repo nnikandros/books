@@ -2,7 +2,6 @@ package server
 
 import (
 	"books/internal/database"
-	"fmt"
 	"net/http"
 	"serde"
 	"strconv"
@@ -36,13 +35,8 @@ func (b *BooksRouter) Routes() chi.Router {
 func (b *BooksRouter) ListBooks(w http.ResponseWriter, r *http.Request) {
 	l, err := b.db.Queries.GetAllBooks(r.Context())
 	if err != nil {
-		http.Error(w, "someting bad happend", http.StatusBadRequest)
+		http.Error(w, "error executing the query", http.StatusBadRequest)
 	}
-
-	// sliceBooks := make([]database.BookModel, 0, len(l))
-	// for _, i := range l {
-	// 	sliceBooks = append(sliceBooks, database.FromBook(i))
-	// }
 
 	err = serde.EncodeJson(w, http.StatusOK, l)
 	if err != nil {
@@ -54,7 +48,6 @@ func (b *BooksRouter) CreateBook(w http.ResponseWriter, r *http.Request) {
 
 	book, err := serde.DecodeV2[database.BookModel](r.Body)
 	if err != nil {
-		fmt.Printf("serde.DecodeV %v", err)
 		http.Error(w, "bad book model", http.StatusBadRequest)
 		return
 	}
@@ -77,14 +70,13 @@ func (b *BooksRouter) CreateBook(w http.ResponseWriter, r *http.Request) {
 }
 
 func (b *BooksRouter) GetBook(w http.ResponseWriter, r *http.Request) {
-	id := chi.URLParam(r, "id")
-	id2, err := strconv.Atoi(id)
+	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
 		http.Error(w, "bad id", http.StatusBadRequest)
 		return
 	}
 
-	book, err := b.db.Queries.GetBookById(r.Context(), int64(id2))
+	book, err := b.db.Queries.GetBookById(r.Context(), int64(id))
 	if err != nil {
 		http.Error(w, "error while executign the query", http.StatusInternalServerError)
 		return
@@ -110,10 +102,7 @@ func (b *BooksRouter) RenderBooksPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tmpl := template.Must(template.ParseFiles("templates/books.html"))
-	err = tmpl.Execute(w, map[string]any{
-		"Title": "Books List",
-		"Books": books,
-	})
+	err = tmpl.Execute(w, books)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
