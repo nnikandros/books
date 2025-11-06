@@ -3,5 +3,8 @@ CREATE TABLE IF NOT EXISTS books(
     title VARCHAR(100) NOT NULL,
     author  TEXT NOT NULL,
     finished_date DATE NOT NULL,
-    rating TEXT NOT NULL
+    rating TEXT NOT NULL,
+    uri_thumbnail TEXT NOT NULL,
+    review TEXT NOT NULL
+
 );

@@ -52,7 +52,7 @@ func (b *BooksRouter) CreateBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	p, err := book.ParseBookModel()
+	p, err := book.ParseAndValidate()
 	if err != nil {
 		http.Error(w, "bad book model", http.StatusBadRequest)
 		return

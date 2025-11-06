@@ -14,4 +14,6 @@ type Book struct {
 	Author       string    `json:"author"`
 	FinishedDate time.Time `json:"finished_date"`
 	Rating       string    `json:"rating"`
+	UriThumbnail string    `json:"uri_thumbnail"`
+	Review       string    `json:"review"`
 }

@@ -11,8 +11,8 @@ import (
 )
 
 const addBook = `-- name: AddBook :exec
-INSERT INTO books (title,author,finished_date,rating)
-VALUES (?,?,?,?)
+INSERT INTO books (title,author,finished_date,rating,uri_thumbnail,review)
+VALUES (?,?,?,?,?,?)
 `
 
 type AddBookParams struct {
@@ -20,6 +20,8 @@ type AddBookParams struct {
 	Author       string    `json:"author"`
 	FinishedDate time.Time `json:"finished_date"`
 	Rating       string    `json:"rating"`
+	UriThumbnail string    `json:"uri_thumbnail"`
+	Review       string    `json:"review"`
 }
 
 func (q *Queries) AddBook(ctx context.Context, arg AddBookParams) error {
@@ -28,6 +30,8 @@ func (q *Queries) AddBook(ctx context.Context, arg AddBookParams) error {
 		arg.Author,
 		arg.FinishedDate,
 		arg.Rating,
+		arg.UriThumbnail,
+		arg.Review,
 	)
 	return err
 }
@@ -43,7 +47,7 @@ func (q *Queries) DeleteBookById(ctx context.Context, id int64) error {
 }
 
 const getAllBooks = `-- name: GetAllBooks :many
-select id, title, author, finished_date, rating
+select id, title, author, finished_date, rating, uri_thumbnail, review
 from books
 `
 
@@ -62,6 +66,8 @@ func (q *Queries) GetAllBooks(ctx context.Context) ([]Book, error) {
 			&i.Author,
 			&i.FinishedDate,
 			&i.Rating,
+			&i.UriThumbnail,
+			&i.Review,
 		); err != nil {
 			return nil, err
 		}
@@ -77,7 +83,7 @@ func (q *Queries) GetAllBooks(ctx context.Context) ([]Book, error) {
 }
 
 const getBookById = `-- name: GetBookById :one
-SELECT id, title, author, finished_date, rating
+SELECT id, title, author, finished_date, rating, uri_thumbnail, review
 FROM books
 WHERE id=?
 LIMIT 1
@@ -92,12 +98,14 @@ func (q *Queries) GetBookById(ctx context.Context, id int64) (Book, error) {
 		&i.Author,
 		&i.FinishedDate,
 		&i.Rating,
+		&i.UriThumbnail,
+		&i.Review,
 	)
 	return i, err
 }
 
 const getBooksByAuthor = `-- name: GetBooksByAuthor :many
-SELECT id, title, author, finished_date, rating
+SELECT id, title, author, finished_date, rating, uri_thumbnail, review
 FROM books
 WHERE author=?
 `
@@ -117,6 +125,8 @@ func (q *Queries) GetBooksByAuthor(ctx context.Context, author string) ([]Book, 
 			&i.Author,
 			&i.FinishedDate,
 			&i.Rating,
+			&i.UriThumbnail,
+			&i.Review,
 		); err != nil {
 			return nil, err
 		}
@@ -132,7 +142,7 @@ func (q *Queries) GetBooksByAuthor(ctx context.Context, author string) ([]Book, 
 }
 
 const getBooksByAuthorSortedByFinishedDate = `-- name: GetBooksByAuthorSortedByFinishedDate :many
-SELECT id, title, author, finished_date, rating
+SELECT id, title, author, finished_date, rating, uri_thumbnail, review
 FROM books
 WHERE author=?
 ORDER BY finished_date ASC
@@ -153,6 +163,8 @@ func (q *Queries) GetBooksByAuthorSortedByFinishedDate(ctx context.Context, auth
 			&i.Author,
 			&i.FinishedDate,
 			&i.Rating,
+			&i.UriThumbnail,
+			&i.Review,
 		); err != nil {
 			return nil, err
 		}
@@ -168,7 +180,7 @@ func (q *Queries) GetBooksByAuthorSortedByFinishedDate(ctx context.Context, auth
 }
 
 const getBooksByAuthorSortedByFinishedDatev2 = `-- name: GetBooksByAuthorSortedByFinishedDatev2 :many
-SELECT id, title, author, finished_date, rating
+SELECT id, title, author, finished_date, rating, uri_thumbnail, review
 FROM books
 WHERE author=?
 ORDER BY finished_date DESC
@@ -189,6 +201,8 @@ func (q *Queries) GetBooksByAuthorSortedByFinishedDatev2(ctx context.Context, au
 			&i.Author,
 			&i.FinishedDate,
 			&i.Rating,
+			&i.UriThumbnail,
+			&i.Review,
 		); err != nil {
 			return nil, err
 		}
@@ -204,7 +218,7 @@ func (q *Queries) GetBooksByAuthorSortedByFinishedDatev2(ctx context.Context, au
 }
 
 const getBooksByAuthorSortedByPublicationDate = `-- name: GetBooksByAuthorSortedByPublicationDate :many
-SELECT id, title, author, finished_date, rating
+SELECT id, title, author, finished_date, rating, uri_thumbnail, review
 FROM books
 WHERE author=?
 ORDER BY publication_date
@@ -225,6 +239,8 @@ func (q *Queries) GetBooksByAuthorSortedByPublicationDate(ctx context.Context, a
 			&i.Author,
 			&i.FinishedDate,
 			&i.Rating,
+			&i.UriThumbnail,
+			&i.Review,
 		); err != nil {
 			return nil, err
 		}
