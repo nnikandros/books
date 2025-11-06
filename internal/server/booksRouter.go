@@ -44,7 +44,9 @@ func (b *BooksRouter) ListBooks(w http.ResponseWriter, r *http.Request) {
 	// }
 
 	err = serde.EncodeJson(w, http.StatusOK, l)
-	fmt.Println(err)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func (b *BooksRouter) CreateBook(w http.ResponseWriter, r *http.Request) {
@@ -64,7 +66,7 @@ func (b *BooksRouter) CreateBook(w http.ResponseWriter, r *http.Request) {
 
 	err = b.db.Queries.AddBook(r.Context(), p)
 	if err != nil {
-		http.Error(w, "insertign the book in the database", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -129,10 +131,8 @@ func (b *BooksRouter) RenderDetalsPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	tmpl := template.Must(template.ParseFiles("templates/book_detail.html"))
-	err = tmpl.Execute(w, map[string]any{
-		"Title": "Book Details",
-		"Book":  book,
-	})
+
+	err = tmpl.Execute(w, book)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
