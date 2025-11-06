@@ -95,6 +95,7 @@ func (b *BooksRouter) GetBook(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// not implemented  yet
 func (b *BooksRouter) DeleteBook(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	w.Write([]byte("Deleted book ID: " + id))
