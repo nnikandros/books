@@ -7,6 +7,7 @@ import (
 	"serde"
 	"strconv"
 	"text/template"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -131,10 +132,17 @@ func (b *BooksRouter) RenderDetalsPage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "error while executign the query", http.StatusInternalServerError)
 		return
 	}
-	tmpl := template.Must(template.ParseFiles("templates/book_detail.html"))
+
+	// tmpl := template.Must(template.ParseFiles("templates/book_detail.html")).Funcs(template.FuncMap{"formatTime": formatTime})
+	tmpl := template.Must(template.New("book_detail.html").Funcs(template.FuncMap{"formatTime": formatTime}).ParseFiles("templates/book_detail.html"))
 
 	err = tmpl.Execute(w, book)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+
+func formatTime(t time.Time) string {
+	return t.Format(time.DateOnly)
+
 }
