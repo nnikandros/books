@@ -17,8 +17,6 @@ func main() {
 	dir := flag.String("dir", "", "directory which has the json files")
 	flag.Parse()
 
-	// database.AddBookParams{}
-
 	fileInfo, err := os.Stat(*dir)
 	if err != nil {
 		log.Fatalf("os.Stat: %v", err)
@@ -27,8 +25,6 @@ func main() {
 	if !fileInfo.IsDir() {
 		log.Fatalf("%v that you pass as an argument for dir is not a dir", dir)
 	}
-
-	// p := *dir + "/*.json"
 
 	files, err := filepath.Glob(*dir + "/*.json")
 	if err != nil {
