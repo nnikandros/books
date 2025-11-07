@@ -20,13 +20,13 @@ func (b *BooksRouter) Routes() chi.Router {
 	r := chi.NewRouter()
 
 	r.Get("/", b.RenderBooksPage)
-	r.Get("/{id}", b.RenderDetalsPage)
+	r.Get("/{id}", b.RenderDetailsPage)
 
 	r.Route("/api", func(r chi.Router) {
 		r.Get("/", b.ListBooks)         // GET /books/api
 		r.Post("/", b.CreateBook)       // POST /books/api
 		r.Get("/{id}", b.GetBook)       // GET /books/{id}
-		r.Delete("/{id}", b.DeleteBook) // DELETE /books/{id}
+		r.Delete("/{id}", b.DeleteBook) // DELETE /books/{id}  not implemented
 
 	})
 
@@ -91,8 +91,18 @@ func (b *BooksRouter) GetBook(w http.ResponseWriter, r *http.Request) {
 
 // not implemented  yet
 func (b *BooksRouter) DeleteBook(w http.ResponseWriter, r *http.Request) {
-	id := chi.URLParam(r, "id")
-	w.Write([]byte("Deleted book ID: " + id))
+
+	id, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		http.Error(w, "bad it", http.StatusBadRequest)
+		return
+	}
+
+	if err = b.db.Queries.DeleteBookById(r.Context(), int64(id)); err != nil {
+		http.Error(w, "error deleting the book", http.StatusInternalServerError)
+		return
+	}
+	w.Write([]byte("Deleted book ID: " + strconv.Itoa(id)))
 }
 
 func (b *BooksRouter) RenderBooksPage(w http.ResponseWriter, r *http.Request) {
@@ -108,15 +118,14 @@ func (b *BooksRouter) RenderBooksPage(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (b *BooksRouter) RenderDetalsPage(w http.ResponseWriter, r *http.Request) {
-	id := chi.URLParam(r, "id")
-	id2, err := strconv.Atoi(id)
+func (b *BooksRouter) RenderDetailsPage(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
 		http.Error(w, "bad id", http.StatusBadRequest)
 		return
 	}
 
-	book, err := b.db.Queries.GetBookById(r.Context(), int64(id2))
+	book, err := b.db.Queries.GetBookById(r.Context(), int64(id))
 	if err != nil {
 		http.Error(w, "error while executign the query", http.StatusInternalServerError)
 		return
