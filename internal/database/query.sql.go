@@ -254,3 +254,57 @@ func (q *Queries) GetBooksByAuthorSortedByPublicationDate(ctx context.Context, a
 	}
 	return items, nil
 }
+
+const updateRatingById = `-- name: UpdateRatingById :one
+UPDATE books
+SET rating=?
+WHERE id=?
+RETURNING id, title, author, finished_date, rating, uri_thumbnail, review
+`
+
+type UpdateRatingByIdParams struct {
+	Rating string `json:"rating"`
+	ID     int64  `json:"id"`
+}
+
+func (q *Queries) UpdateRatingById(ctx context.Context, arg UpdateRatingByIdParams) (Book, error) {
+	row := q.db.QueryRowContext(ctx, updateRatingById, arg.Rating, arg.ID)
+	var i Book
+	err := row.Scan(
+		&i.ID,
+		&i.Title,
+		&i.Author,
+		&i.FinishedDate,
+		&i.Rating,
+		&i.UriThumbnail,
+		&i.Review,
+	)
+	return i, err
+}
+
+const updateReviewById = `-- name: UpdateReviewById :one
+UPDATE books
+SET review=?
+WHERE id=?
+RETURNING id, title, author, finished_date, rating, uri_thumbnail, review
+`
+
+type UpdateReviewByIdParams struct {
+	Review string `json:"review"`
+	ID     int64  `json:"id"`
+}
+
+func (q *Queries) UpdateReviewById(ctx context.Context, arg UpdateReviewByIdParams) (Book, error) {
+	row := q.db.QueryRowContext(ctx, updateReviewById, arg.Review, arg.ID)
+	var i Book
+	err := row.Scan(
+		&i.ID,
+		&i.Title,
+		&i.Author,
+		&i.FinishedDate,
+		&i.Rating,
+		&i.UriThumbnail,
+		&i.Review,
+	)
+	return i, err
+}

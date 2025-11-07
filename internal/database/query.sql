@@ -45,3 +45,14 @@ where id=?;
 
 
 
+-- name: UpdateReviewById :one
+UPDATE books
+SET review=?
+WHERE id=?
+RETURNING *;
+
+-- name: UpdateRatingById :one
+UPDATE books
+SET rating=?
+WHERE id=?
+RETURNING *;
