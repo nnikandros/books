@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"text/template"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -26,7 +27,8 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	r.Get("/health", s.healthHandler)
 
-	books := BooksRouter{db: s.db}
+	t := template.Must(template.New("book_templates").Funcs(template.FuncMap{"formatTime": formatTime}).ParseGlob("templates/*"))
+	books := BooksRouter{db: s.db, templates: t}
 	r.Mount("/books", books.Routes())
 
 	return r
@@ -47,5 +49,6 @@ func (s *Server) HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) healthHandler(w http.ResponseWriter, r *http.Request) {
 	jsonResp, _ := json.Marshal(s.db.Health())
+	w.Header().Set("content-type", "application/json")
 	_, _ = w.Write(jsonResp)
 }

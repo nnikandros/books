@@ -12,7 +12,8 @@ import (
 )
 
 type BooksRouter struct {
-	db database.Service
+	db        database.Service
+	templates *template.Template
 }
 
 func (b *BooksRouter) Routes() chi.Router {
@@ -101,11 +102,10 @@ func (b *BooksRouter) RenderBooksPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmpl := template.Must(template.ParseFiles("templates/books.html"))
-	err = tmpl.Execute(w, books)
-	if err != nil {
+	if err := b.templates.ExecuteTemplate(w, "books.html", books); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+
 }
 
 func (b *BooksRouter) RenderDetalsPage(w http.ResponseWriter, r *http.Request) {
@@ -122,13 +122,10 @@ func (b *BooksRouter) RenderDetalsPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// tmpl := template.Must(template.ParseFiles("templates/book_detail.html")).Funcs(template.FuncMap{"formatTime": formatTime})
-	tmpl := template.Must(template.New("book_detail.html").Funcs(template.FuncMap{"formatTime": formatTime}).ParseFiles("templates/book_detail.html"))
-
-	err = tmpl.Execute(w, book)
-	if err != nil {
+	if err := b.templates.ExecuteTemplate(w, "book_detail.html", book); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+
 }
 
 func formatTime(t time.Time) string {
