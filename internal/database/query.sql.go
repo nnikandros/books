@@ -82,6 +82,43 @@ func (q *Queries) GetAllBooks(ctx context.Context) ([]Book, error) {
 	return items, nil
 }
 
+const getAllBooksSortedByDate = `-- name: GetAllBooksSortedByDate :many
+select id, title, author, finished_date, rating, uri_thumbnail, review
+from books
+ORDER BY finished_date ASC
+`
+
+func (q *Queries) GetAllBooksSortedByDate(ctx context.Context) ([]Book, error) {
+	rows, err := q.db.QueryContext(ctx, getAllBooksSortedByDate)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Book
+	for rows.Next() {
+		var i Book
+		if err := rows.Scan(
+			&i.ID,
+			&i.Title,
+			&i.Author,
+			&i.FinishedDate,
+			&i.Rating,
+			&i.UriThumbnail,
+			&i.Review,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getBookById = `-- name: GetBookById :one
 SELECT id, title, author, finished_date, rating, uri_thumbnail, review
 FROM books

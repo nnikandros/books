@@ -106,7 +106,7 @@ func (b *BooksRouter) DeleteBook(w http.ResponseWriter, r *http.Request) {
 }
 
 func (b *BooksRouter) RenderBooksPage(w http.ResponseWriter, r *http.Request) {
-	books, err := b.db.Queries.GetAllBooks(r.Context())
+	books, err := b.db.Queries.GetAllBooksSortedByDate(r.Context())
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

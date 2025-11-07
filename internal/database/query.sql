@@ -3,6 +3,14 @@ select *
 from books;
 
 
+-- name: GetAllBooksSortedByDate :many
+select *
+from books
+ORDER BY finished_date DESC;
+
+
+
+
 
 -- name: AddBook :exec
 INSERT INTO books (title,author,finished_date,rating,uri_thumbnail,review)
