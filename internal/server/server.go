@@ -8,6 +8,8 @@ import (
 	"text/template"
 	"time"
 
+	_ "net/http/pprof"
+
 	_ "github.com/joho/godotenv/autoload"
 
 	"books/internal/database"

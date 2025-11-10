@@ -27,6 +27,9 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.Get("/{id}", s.RenderDetailsPage)
 
 	r.Get("/health", s.healthHandler)
+
+	// r.Mount("/debug", middleware.Profiler())
+
 	booksAPI := BooksAPIRouter{db: s.db}
 	r.Mount("/api", booksAPI.Routes())
 
