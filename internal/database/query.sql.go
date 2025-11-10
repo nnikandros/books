@@ -85,7 +85,7 @@ func (q *Queries) GetAllBooks(ctx context.Context) ([]Book, error) {
 const getAllBooksSortedByDate = `-- name: GetAllBooksSortedByDate :many
 select id, title, author, finished_date, rating, uri_thumbnail, review
 from books
-ORDER BY finished_date ASC
+ORDER BY date(finished_date) DESC
 `
 
 func (q *Queries) GetAllBooksSortedByDate(ctx context.Context) ([]Book, error) {

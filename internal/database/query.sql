@@ -6,7 +6,7 @@ from books;
 -- name: GetAllBooksSortedByDate :many
 select *
 from books
-ORDER BY finished_date DESC;
+ORDER BY date(finished_date) DESC;
 
 
 
