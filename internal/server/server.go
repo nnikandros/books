@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"text/template"
 	"time"
 
 	_ "github.com/joho/godotenv/autoload"
@@ -13,17 +14,19 @@ import (
 )
 
 type Server struct {
-	port int
-
-	db database.Service
+	port      int
+	db        database.Service
+	templates *template.Template
 }
 
 func New() *http.Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
-	NewServer := &Server{
-		port: port,
+	t := template.Must(template.New("book_templates").Funcs(template.FuncMap{"formatTime": formatTime}).ParseGlob("templates/*"))
 
-		db: database.NewService(),
+	NewServer := &Server{
+		port:      port,
+		db:        database.NewService(),
+		templates: t,
 	}
 
 	// Declare Server config

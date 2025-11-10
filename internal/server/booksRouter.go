@@ -5,24 +5,19 @@ import (
 	"net/http"
 	"serde"
 	"strconv"
-	"text/template"
 	"time"
 
 	"github.com/go-chi/chi/v5"
 )
 
-type BooksRouter struct {
-	db        database.Service
-	templates *template.Template
+type BooksAPIRouter struct {
+	db database.Service
 }
 
-func (b *BooksRouter) Routes() chi.Router {
+func (b *BooksAPIRouter) Routes() chi.Router {
 	r := chi.NewRouter()
 
-	r.Get("/", b.RenderBooksPage)
-	r.Get("/{id}", b.RenderDetailsPage)
-
-	r.Route("/api", func(r chi.Router) {
+	r.Route("/v1", func(r chi.Router) {
 		r.Get("/", b.ListBooks)         // GET /books/api
 		r.Post("/", b.CreateBook)       // POST /books/api
 		r.Get("/{id}", b.GetBook)       // GET /books/{id}
@@ -33,7 +28,7 @@ func (b *BooksRouter) Routes() chi.Router {
 	return r
 }
 
-func (b *BooksRouter) ListBooks(w http.ResponseWriter, r *http.Request) {
+func (b *BooksAPIRouter) ListBooks(w http.ResponseWriter, r *http.Request) {
 	l, err := b.db.Queries.GetAllBooks(r.Context())
 	if err != nil {
 		http.Error(w, "error executing the query", http.StatusBadRequest)
@@ -45,7 +40,7 @@ func (b *BooksRouter) ListBooks(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (b *BooksRouter) CreateBook(w http.ResponseWriter, r *http.Request) {
+func (b *BooksAPIRouter) CreateBook(w http.ResponseWriter, r *http.Request) {
 
 	book, err := serde.DecodeV2[database.BookModel](r.Body)
 	if err != nil {
@@ -70,7 +65,7 @@ func (b *BooksRouter) CreateBook(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (b *BooksRouter) GetBook(w http.ResponseWriter, r *http.Request) {
+func (b *BooksAPIRouter) GetBook(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
 		http.Error(w, "bad id", http.StatusBadRequest)
@@ -89,8 +84,7 @@ func (b *BooksRouter) GetBook(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// not implemented  yet
-func (b *BooksRouter) DeleteBook(w http.ResponseWriter, r *http.Request) {
+func (b *BooksAPIRouter) DeleteBook(w http.ResponseWriter, r *http.Request) {
 
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
@@ -103,38 +97,6 @@ func (b *BooksRouter) DeleteBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Write([]byte("Deleted book ID: " + strconv.Itoa(id)))
-}
-
-func (b *BooksRouter) RenderBooksPage(w http.ResponseWriter, r *http.Request) {
-	books, err := b.db.Queries.GetAllBooksSortedByDate(r.Context())
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	if err := b.templates.ExecuteTemplate(w, "books.html", books); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-
-}
-
-func (b *BooksRouter) RenderDetailsPage(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.Atoi(chi.URLParam(r, "id"))
-	if err != nil {
-		http.Error(w, "bad id", http.StatusBadRequest)
-		return
-	}
-
-	book, err := b.db.Queries.GetBookById(r.Context(), int64(id))
-	if err != nil {
-		http.Error(w, "error while executign the query", http.StatusInternalServerError)
-		return
-	}
-
-	if err := b.templates.ExecuteTemplate(w, "book_detail.html", book); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-
 }
 
 func formatTime(t time.Time) string {
