@@ -30,6 +30,18 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	// r.Mount("/debug", middleware.Profiler())
 
+	r.Get("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
+
+		path := "/ec/local/home/nikanni/my-programming/app-workspace/books/favicon.ico"
+		// b, err := os.ReadFile(path)
+		// if err != nil {
+		// 	http.Error(w, "not fouund", http.StatusNoContent)
+		// }
+		// w.Write(b)
+
+		http.ServeFile(w, r, path)
+	})
+
 	booksAPI := BooksAPIRouter{db: s.db}
 	r.Mount("/api", booksAPI.Routes())
 

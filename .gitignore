@@ -5,7 +5,9 @@
 *.so
 *.dylib
 /cmd/migrations/addMany/addMany
+addMany
 /cmd/migrations/addBook/addBook
+addBook
 
 # Test binary, built with "go test -c"
 *.test
