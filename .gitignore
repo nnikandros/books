@@ -4,6 +4,8 @@
 *.dll
 *.so
 *.dylib
+/cmd/migrations/addMany/addMany
+/cmd/migrations/addBook/addBook
 
 # Test binary, built with "go test -c"
 *.test
@@ -35,3 +37,4 @@ main
 
 
 test.db
+prod.db
