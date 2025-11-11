@@ -13,8 +13,6 @@ import (
 
 func main() {
 
-	// service := database.NewService()
-
 	file := flag.String("file", "", "path to the JSON file")
 	dburl := flag.String("db", "", "path to the JSON file")
 	flag.Parse()
