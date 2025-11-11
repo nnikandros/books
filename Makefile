@@ -46,3 +46,7 @@ watch:
 
 .PHONY: all build run test clean watch
 
+addMany:
+	@echo "building addMany migrations"
+	@go build -o ./cmd/migrations/addMany ./cmd/migrations/addMany
+	@mv cmd/migrations/addMany/addMany . 

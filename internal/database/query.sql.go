@@ -11,7 +11,7 @@ import (
 )
 
 const addBook = `-- name: AddBook :exec
-INSERT INTO books (title,author,finished_date,rating,uri_thumbnail,review)
+INSERT OR IGNORE INTO books (title,author,finished_date,rating,uri_thumbnail,review)
 VALUES (?,?,?,?,?,?)
 `
 

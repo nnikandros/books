@@ -13,7 +13,7 @@ ORDER BY date(finished_date) DESC;
 
 
 -- name: AddBook :exec
-INSERT INTO books (title,author,finished_date,rating,uri_thumbnail,review)
+INSERT OR IGNORE INTO books (title,author,finished_date,rating,uri_thumbnail,review)
 VALUES (?,?,?,?,?,?);
 
 -- name: GetBooksByAuthor :many

@@ -49,6 +49,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(allBooks)
+	fmt.Printf("All Books updated %+v\n", allBooks)
 
 }

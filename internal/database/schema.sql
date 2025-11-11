@@ -5,6 +5,6 @@ CREATE TABLE IF NOT EXISTS books(
     finished_date DATE NOT NULL,
     rating TEXT NOT NULL,
     uri_thumbnail TEXT NOT NULL,
-    review TEXT NOT NULL
-
+    review TEXT NOT NULL,
+    UNIQUE (title)
 );
