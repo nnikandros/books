@@ -1,6 +1,7 @@
 package server
 
 import (
+	"books/internal/paths"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -32,9 +33,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	r.Get("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
 
-		path := "/ec/local/home/nikanni/my-programming/app-workspace/books/favicon.ico"
-
-		http.ServeFile(w, r, path)
+		http.ServeFile(w, r, paths.Favicon())
 	})
 
 	booksAPI := BooksAPIRouter{db: s.db}
