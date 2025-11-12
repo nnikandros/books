@@ -64,13 +64,13 @@ func (s *Server) RenderBooksPage(w http.ResponseWriter, r *http.Request) {
 func (s *Server) RenderDetailsPage(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
-		http.Error(w, "bad id", http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	book, err := s.db.Queries.GetBookById(r.Context(), int64(id))
 	if err != nil {
-		http.Error(w, "error while executign the query", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
