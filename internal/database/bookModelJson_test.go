@@ -16,7 +16,7 @@ func TestBookModelJson(t *testing.T) {
 	for _, bookModel := range m {
 		_, err = bookModel.ParseAndValidate()
 		if err != nil {
-			t.Error(err)
+			t.Errorf("bookModel %v gave parsing error %v", bookModel, err)
 		}
 	}
 
