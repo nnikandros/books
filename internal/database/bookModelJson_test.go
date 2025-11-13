@@ -1,42 +1,23 @@
 package database
 
 import (
-	"fmt"
-	"path/filepath"
+	"books/internal/paths"
 	"serde"
 	"testing"
 )
 
 func TestBookModelJson(t *testing.T) {
 
-	p := "../../books-json-files"
-	absPath, err := filepath.Abs(p)
+	m, err := serde.DecodeJsonFileToStruct[[]BookModel](paths.BooksJsonFile())
 	if err != nil {
 		t.Error(err)
 	}
 
-	filepath.Join(absPath, "gravity.json")
-
-	// m, err := serde.DecodeJsonFileToStruct[BookModel](filepath.Join(absPath, "gravity.json"))
-	// if err != nil {
-	// 	t.Error(err)
-	// }
-
-	// fmt.Printf("%+v", m)
-	// fmt.Println(m.ParseAndValidate())
-
-	m, err := serde.DecodeJsonFileToStruct[[]BookModel](filepath.Join(absPath, "books.json"))
-	if err != nil {
-		t.Error(err)
-	}
-
-	fmt.Printf("%+v", m)
-	for _, b := range m {
-		bookPArams, err := b.ParseAndValidate()
+	for _, bookModel := range m {
+		_, err = bookModel.ParseAndValidate()
 		if err != nil {
 			t.Error(err)
 		}
-		fmt.Printf("%+v", bookPArams)
 	}
 
 }

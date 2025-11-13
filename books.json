@@ -1,0 +1,42 @@
+[
+    {
+        "title": "Gravity's Rainbow",
+        "author": "Thomas Pynchon",
+        "finished-date": "2025-12-30",
+        "rating": "5/5",
+        "uri-thumbnail": "https://upload.wikimedia.org/wikipedia/commons/7/79/Gravity%27s_Rainbow_%281973_1st_ed_cover%29.jpg",
+        "review": "to be added"
+    },
+    {
+        "title": "Stella Maris",
+        "author": "Cormac McCarthy",
+        "finished-date": "2025-05-30",
+        "rating": "5/5",
+        "uri-thumbnail": "https://upload.wikimedia.org/wikipedia/en/d/d5/Stella_Maris_%28Cormac_McCarthy%29.png",
+        "review": "to be added"
+    },
+    {
+        "title": "The Passenger",
+        "author": "Cormac McCarthy",
+        "finished-date": "2025-03-05",
+        "rating": "5/5",
+        "uri-thumbnail": "https://upload.wikimedia.org/wikipedia/en/8/8a/The_Passenger_%28Cormac_McCarthy%29.png",
+        "review": "to be added"
+    },
+    {
+        "title": "A Personal Matter",
+        "author": "Kenzaburo Oe",
+        "finished-date": "2024-12-30",
+        "rating": "5/5",
+        "uri-thumbnail": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1328822587i/25191.jpg",
+        "review": "to be added"
+    },
+    {
+        "title": "East of Eden",
+        "author": "John Steinbeck",
+        "finished-date": "2024-12-30",
+        "rating": "3/5",
+        "uri-thumbnail": "https://upload.wikimedia.org/wikipedia/commons/9/9a/East_of_Eden_%281952_1st_ed_dust_jacket%29.jpg",
+        "review": "Nice read and some really nice pages Steinbeck-style."
+    }
+]

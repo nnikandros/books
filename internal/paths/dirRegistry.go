@@ -32,3 +32,7 @@ func Favicon() string {
 func SqliteProdFile() string {
 	return filepath.Join(booksDir, "prod.db")
 }
+
+func BooksJsonFile() string {
+	return filepath.Join(booksDir, "books.json")
+}
