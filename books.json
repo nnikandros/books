@@ -52,5 +52,12 @@
         "finished-date": "2020-03-05",
         "rating": "5/5",
         "uri-thumbnail": "https://upload.wikimedia.org/wikipedia/en/d/df/Blood_Meridian_Cormac_McCarthy_book_cover.png"
+    },
+    {
+        "title": "Part Im Blitz",
+        "author": "Elias Canetti",
+        "finished-date": "2018-03-05",
+        "rating": "4/5",
+        "uri-thumbnail": "https://www.literaturhaus-wien.at/wp-content/uploads/2023/09/9783446203501.webp"
     }
 ]
