@@ -21,7 +21,7 @@ func (b *BooksAPIRouter) Routes() chi.Router {
 		r.Get("/", b.ListBooks)         // GET /books/api
 		r.Post("/", b.CreateBook)       // POST /books/api
 		r.Get("/{id}", b.GetBook)       // GET /books/{id}
-		r.Delete("/{id}", b.DeleteBook) // DELETE /books/{id}  not implemented
+		r.Delete("/{id}", b.DeleteBook) // DELETE /books/{id}
 
 	})
 
