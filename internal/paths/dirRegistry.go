@@ -1,38 +1,35 @@
 package paths
 
 import (
-	"log"
 	"path/filepath"
+	"runtime"
 )
 
-func appDir() string {
-	b, err := filepath.Rel(".", "../../../books")
-	if err != nil {
-		log.Fatalf("failed to get relative path: %v", err)
-	}
-	abs, err := filepath.Abs(b)
-	if err != nil {
-		log.Fatalf("failed to get absolute path: %v", err)
-	}
-	return abs
+func rootDir() string {
+	// Get file path of this file
+	_, filename, _, _ := runtime.Caller(0)
+
+	// filename = ".../yourproject/paths/paths.go"
+	// root = parent of parent of that dir
+	return filepath.Dir(filepath.Dir(filepath.Dir(filename)))
 }
 
-var booksDir = appDir()
+var projectRoot = rootDir()
 
 func SqliteTestFile() string {
-	return filepath.Join(booksDir, "test.db")
+	return filepath.Join(projectRoot, "test.db")
 
 }
 
 func Favicon() string {
-	return filepath.Join(booksDir, "favicon.ico")
+	return filepath.Join(projectRoot, "favicon.ico")
 
 }
 
 func SqliteProdFile() string {
-	return filepath.Join(booksDir, "prod.db")
+	return filepath.Join(projectRoot, "prod.db")
 }
 
 func BooksJsonFile() string {
-	return filepath.Join(booksDir, "books.json")
+	return filepath.Join(projectRoot, "books.json")
 }

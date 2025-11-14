@@ -1,12 +1,13 @@
 package paths
 
 import (
+	"fmt"
 	"path/filepath"
 	"testing"
 )
 
 func TestDirectories(t *testing.T) {
-	output := appDir()
+	output := rootDir()
 
 	one := filepath.Base(output)
 
@@ -19,4 +20,9 @@ func TestDirectories(t *testing.T) {
 	if filepath.Base(faviconPath) != "favicon.ico" {
 		t.Error("favicon.ico not matching the path that it should")
 	}
+
+	// p, _ := filepath.Abs(".")
+	// fmt.Println(filepath.Dir(filepath.Dir(p)))
+
+	fmt.Println(BooksJsonFile())
 }

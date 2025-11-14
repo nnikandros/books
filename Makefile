@@ -48,5 +48,6 @@ watch:
 
 addMany:
 	@echo "building addMany migrations"
-	@go build -o ./cmd/migrations/addMany ./cmd/migrations/addMany
+	@go build -C cmd/migrations/addMany
 	@mv cmd/migrations/addMany/addMany . 
+	

@@ -38,5 +38,19 @@
         "rating": "3/5",
         "uri-thumbnail": "https://upload.wikimedia.org/wikipedia/commons/9/9a/East_of_Eden_%281952_1st_ed_dust_jacket%29.jpg",
         "review": "Nice read and some really nice pages Steinbeck-style."
+    },
+    {
+        "title": "Child of God",
+        "author": "Cormac McCarthy",
+        "finished-date": "2024-12-05",
+        "rating": "4/5",
+        "uri-thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Child_of_God_-_Cormac_McCarthy.jpg/250px-Child_of_God_-_Cormac_McCarthy.jpg"
+    },
+    {
+        "title": "Blood Meridian or the Evening Redness in the West",
+        "author": "Cormac McCarthy",
+        "finished-date": "2020-03-05",
+        "rating": "5/5",
+        "uri-thumbnail": "https://upload.wikimedia.org/wikipedia/en/d/df/Blood_Meridian_Cormac_McCarthy_book_cover.png"
     }
 ]
