@@ -5,9 +5,13 @@ all: build test
 
 build:
 	@echo "Building..."
-	
-	
 	@go build -o main cmd/api/main.go
+	
+	
+
+build-arm:
+	@echo "Cross compiling for arm64..."
+	@CGO_ENABLED=1 GOOS=linux GOARCH=arm64 go build -o main-arm cmd/api/main.go
 
 # Run the application
 run:
