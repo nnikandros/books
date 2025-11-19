@@ -11,7 +11,7 @@ build:
 
 build-arm:
 	@echo "Cross compiling for arm64..."
-	@GOOS=linux GOARCH=arm64 CC=CC=aarch64-linux-gnu-gcc go build -o main-arm cmd/api/main.go
+	@GOOS=linux GOARCH=arm64 CC=aarch64-linux-gnu-gcc go build -o main-arm cmd/api/main.go
 
 
 # Run the application
