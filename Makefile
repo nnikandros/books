@@ -56,3 +56,8 @@ addMany:
 	@go build -C cmd/migrations/addMany
 	@mv cmd/migrations/addMany/addMany . 
 	
+
+
+transfer:
+	@echo "transfering"
+	@rsync -av main templates prod.db  hetzner-app-runner:/home/app-runner/applications/books2
