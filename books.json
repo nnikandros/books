@@ -59,5 +59,12 @@
         "finished-date": "2018-03-05",
         "rating": "4/5",
         "uri-thumbnail": "https://www.literaturhaus-wien.at/wp-content/uploads/2023/09/9783446203501.webp"
+    },
+    {
+        "title": "Slaughterhouse-Five",
+        "author": "Kurt Vonnegut",
+        "finished-date": "2006-05-05",
+        "rating": "5/5",
+        "uri-thumbnail": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Slaughterhouse-Five_%28first_edition%29_-_Kurt_Vonnegut.jpg"
     }
 ]
