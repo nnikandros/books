@@ -7,7 +7,11 @@ build:
 	@echo "Building..."
 	@go build -o main cmd/api/main.go
 	
-	
+
+build-addMany:
+	@echo "Buildling"
+	@go build -C cmd/migrations/addMany
+	@mv cmd/migrations/addMany/addMany ${HOME}/.local/bin
 
 build-arm:
 	@echo "Cross compiling for arm64..."
