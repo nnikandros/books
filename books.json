@@ -66,5 +66,12 @@
         "finished-date": "2006-05-05",
         "rating": "5/5",
         "uri-thumbnail": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Slaughterhouse-Five_%28first_edition%29_-_Kurt_Vonnegut.jpg"
+    },
+    {
+        "title": "Elizabeth Costello",
+        "author": "J.M. Coetzee",
+        "finished-date": "2016-01-29",
+        "rating": "5/5",
+        "uri-thumbnail": "https://upload.wikimedia.org/wikipedia/en/e/e3/ElizabethCostelloNovel.jpg"
     }
 ]
