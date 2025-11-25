@@ -65,3 +65,8 @@ addMany:
 transfer:
 	@echo "transfering"
 	@rsync -av main templates prod.db  hetzner-app-runner:/home/app-runner/applications/books2
+
+.PHONY: deploy
+deploy:
+	@echo "deploying"
+	@echo ${APP_RUNNER_PASSWORD} | ssh hetzner-app-runner -t sudo -S systemctl status books.service 2> /dev/null
