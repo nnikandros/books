@@ -37,6 +37,6 @@ main
 .DS_Store
 
 
-
+csvjson.json
 test.db
 prod.db

@@ -73,5 +73,19 @@
         "finished-date": "2016-01-29",
         "rating": "5/5",
         "uri-thumbnail": "https://upload.wikimedia.org/wikipedia/en/e/e3/ElizabethCostelloNovel.jpg"
+    },
+    {
+        "title": "The Rings of Saturn",
+        "author": "W.G. Sebald",
+        "finished-date": "2015-05-12",
+        "rating": "5/5",
+        "uri-thumbnail": "https://cdn.sanity.io/images/p34gzxcg/production/d6c113285414f1f50cc6214ca4c1a4fbe83bf6a3-663x1027.jpg?auto=format&w=500&fit=scale"
+    },
+    {
+        "title": "The Crying of Lot 49",
+        "author": "Thomas Pynchon",
+        "finished-date": "2015-04-12",
+        "rating": "5/5",
+        "uri-thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/The_Crying_of_Lot_49_%281965_1st_ed_cover%29.jpg/960px-The_Crying_of_Lot_49_%281965_1st_ed_cover%29.jpg"
     }
 ]
