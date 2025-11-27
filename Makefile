@@ -11,7 +11,7 @@ build:
 build-addMany:
 	@echo "Buildling"
 	@go build -C cmd/migrations/addMany
-	@mv cmd/migrations/addMany/addMany ${HOME}/.local/bin
+	@mv cmd/migrations/addMany/addMany $(HOME)/.local/bin
 
 build-arm:
 	@echo "Cross compiling for arm64..."
@@ -62,12 +62,12 @@ addMany:
 	
 
 
-sync:
-	@echo "transfering"
+sync: build-arm
+	@echo "syncing"
 	@rsync -av main templates prod.db  hetzner-app-runner:/home/app-runner/applications/books2
 
-deploy:
-	@echo "deploying"
+reload:
+	@echo "reloading service"
 	@echo $(APP_RUNNER_PASSWORD) | ssh hetzner-app-runner -t sudo -S systemctl reload books.service 2> /dev/null
 
 
