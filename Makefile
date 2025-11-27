@@ -53,7 +53,7 @@ watch:
             fi; \
         fi
 
-.PHONY: all build run test clean watch
+.PHONY: all build run test clean watch sync deploy status journal
 
 addMany:
 	@echo "building addMany migrations"
@@ -62,11 +62,17 @@ addMany:
 	
 
 
-transfer:
+sync:
 	@echo "transfering"
 	@rsync -av main templates prod.db  hetzner-app-runner:/home/app-runner/applications/books2
 
-.PHONY: deploy
 deploy:
 	@echo "deploying"
-	@echo $(APP_RUNNER_PASSWORD) | ssh hetzner-app-runner -t sudo -S systemctl status books.service 2> /dev/null
+	@echo $(APP_RUNNER_PASSWORD) | ssh hetzner-app-runner -t sudo -S systemctl reload books.service 2> /dev/null
+
+
+status:
+	@ssh hetzner-app-runner -t systemctl status books.service 2> /dev/null
+
+journal:
+	@ssh hetzner-app-runner -t journalctl -fu books.service 2> /dev/null
