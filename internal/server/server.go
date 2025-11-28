@@ -2,10 +2,10 @@ package server
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 	"os"
 	"strconv"
-	"text/template"
 	"time"
 
 	_ "net/http/pprof"
