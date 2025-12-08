@@ -6,6 +6,10 @@ all: build test
 build:
 	@echo "Building..."
 	@go build -o main cmd/api/main.go
+
+analysis:
+	@echo "Escape analysis"
+	@go build -gcflags="-m" cmd/api/main.go 
 	
 
 build-addMany:
@@ -53,7 +57,7 @@ watch:
             fi; \
         fi
 
-.PHONY: all build run test clean watch sync deploy status journal
+.PHONY: all build run test clean watch sync deploy status journal analysis
 
 addMany:
 	@echo "building addMany migrations"
