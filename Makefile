@@ -67,7 +67,7 @@ addMany:
 
 
 sync: build-arm
-	@echo "syncing"
+	@echo "sync"
 	@rsync -av main templates prod.db  hetzner-app-runner:/home/app-runner/applications/books2
 
 reload:
@@ -79,4 +79,4 @@ status:
 	@ssh hetzner-app-runner -t systemctl status books.service 2> /dev/null
 
 journal:
-	@ssh hetzner-app-runner -t journalctl -fu books.service 2> /dev/null
+	@ssh hetzner-app-runner -t journalctl -fu books.service
