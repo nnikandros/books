@@ -68,7 +68,7 @@ addMany:
 
 sync: build-arm
 	@echo "sync"
-	@rsync -av main templates prod.db  hetzner-app-runner:/home/app-runner/applications/books2
+	@rsync -av main templates prod.db  hetzner-app-runner:/home/app-runner/applications/books
 
 reload:
 	@echo "reloading service"

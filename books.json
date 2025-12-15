@@ -54,13 +54,6 @@
         "uri-thumbnail": "https://upload.wikimedia.org/wikipedia/en/d/df/Blood_Meridian_Cormac_McCarthy_book_cover.png"
     },
     {
-        "title": "Part Im Blitz",
-        "author": "Elias Canetti",
-        "finished-date": "2018-03-05",
-        "rating": "4/5",
-        "uri-thumbnail": "https://www.literaturhaus-wien.at/wp-content/uploads/2023/09/9783446203501.webp"
-    },
-    {
         "title": "Slaughterhouse-Five",
         "author": "Kurt Vonnegut",
         "finished-date": "2006-05-05",
@@ -87,5 +80,12 @@
         "finished-date": "2015-04-12",
         "rating": "5/5",
         "uri-thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/The_Crying_of_Lot_49_%281965_1st_ed_cover%29.jpg/960px-The_Crying_of_Lot_49_%281965_1st_ed_cover%29.jpg"
+    },
+    {
+        "title": "The Grapes of Wrath",
+        "author": "John Steinbeck",
+        "finished-date": "2014-08-12",
+        "rating": "5/5",
+        "uri-thumbnail": "https://upload.wikimedia.org/wikipedia/commons/a/ad/The_Grapes_of_Wrath_%281939_1st_ed_cover%29.jpg"
     }
 ]
