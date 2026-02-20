@@ -4,74 +4,17 @@ import (
 	"books/internal/paths"
 	"encoding/json"
 	"log"
-	"log/slog"
 	"net/http"
-	"os"
 	"strconv"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
-	"github.com/go-chi/httplog/v3"
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
-
-	logFormat := httplog.SchemaECS.Concise(true)
-
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
-		ReplaceAttr: logFormat.ReplaceAttr,
-	})).With(
-		slog.String("app", "example-app"),
-		slog.String("version", "v1.0.0-a1fa420"),
-		slog.String("env", "production"),
-	)
-
 	r := chi.NewRouter()
-	// r.Use(middleware.Logger)
-
-	// Request logger
-	r.Use(httplog.RequestLogger(logger, &httplog.Options{
-		// Level defines the verbosity of the request logs:
-		// slog.LevelDebug - log all responses (incl. OPTIONS)
-		// slog.LevelInfo  - log responses (excl. OPTIONS)
-		// slog.LevelWarn  - log 4xx and 5xx responses only (except for 429)
-		// slog.LevelError - log 5xx responses only
-		Level: slog.LevelInfo,
-
-		// Set log output to Elastic Common Schema (ECS) format.
-		Schema: httplog.SchemaECS,
-
-		// RecoverPanics recovers from panics occurring in the underlying HTTP handlers
-		// and middlewares. It returns HTTP 500 unless response status was already set.
-		//
-		// NOTE: Panics are logged as errors automatically, regardless of this setting.
-		RecoverPanics: true,
-
-		// Optionally, filter out some request logs.
-		Skip: func(req *http.Request, respStatus int) bool {
-			return respStatus == 404 || respStatus == 405
-		},
-
-		// Optionally, log selected request/response headers explicitly.
-		LogRequestHeaders:  []string{"Origin"},
-		LogResponseHeaders: []string{},
-
-		// Optionally, enable logging of request/response body based on custom conditions.
-		// Useful for debugging payload issues in development.
-		// LogRequestBody:  isDebugHeaderSet,
-		// LogResponseBody: isDebugHeaderSet,
-	}))
-
-	// Set request log attribute from within middleware.
-	r.Use(func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			ctx := r.Context()
-
-			httplog.SetAttrs(ctx, slog.String("user", "user1"))
-
-			next.ServeHTTP(w, r.WithContext(ctx))
-		})
-	})
+	r.Use(middleware.Logger)
 
 	r.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"https://*", "http://*"},
