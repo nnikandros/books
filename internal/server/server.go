@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"html/template"
+	"log/slog"
 	"net/http"
 	"os"
 	"strconv"
@@ -19,6 +20,7 @@ type Server struct {
 	port      int
 	db        database.Service
 	templates *template.Template
+	logger    *slog.Logger
 }
 
 func New() *http.Server {
@@ -29,6 +31,7 @@ func New() *http.Server {
 		port:      port,
 		db:        database.NewService(),
 		templates: t,
+		logger:    getLogger(),
 	}
 
 	// Declare Server config
