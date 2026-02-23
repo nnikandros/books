@@ -1,6 +1,11 @@
 package database
 
-import "time"
+import (
+	"fmt"
+	"io"
+	"serde"
+	"time"
+)
 
 type BookModel struct {
 	Title        string `json:"title"`
@@ -19,4 +24,21 @@ func (u BookModel) ParseAndValidate() (AddBookParams, error) {
 	}
 
 	return AddBookParams{Title: u.Title, Author: u.Author, FinishedDate: f, Rating: u.Rating, UriThumbnail: u.UriThumbnail, Review: u.Review}, nil
+}
+
+func NewAddBookParams(r io.ReadCloser) (AddBookParams, error) {
+
+	bm, err := serde.DecodeJsonFileToStructV2[BookModel](r)
+
+	if err != nil {
+		return AddBookParams{}, serde.DeserializingError(err)
+	}
+
+	addBookParams, err := bm.ParseAndValidate()
+	if err != nil {
+		return AddBookParams{}, fmt.Errorf("at parsing and validating %w", err)
+	}
+
+	return addBookParams, nil
+
 }

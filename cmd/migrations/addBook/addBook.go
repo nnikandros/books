@@ -2,54 +2,69 @@ package main
 
 import (
 	"books/internal/database"
+	"books/internal/paths"
 	"context"
+	"database/sql"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"os"
-	"path/filepath"
-	"serde"
 )
 
 func main() {
 
-	service := database.NewService()
-	dir := flag.String("dir", "", "directory which has the json files")
+	dburl := flag.String("db", "", "prod or test")
+	path := flag.String("path", "", "path to the json file")
 	flag.Parse()
+	var pathToDb string
 
-	fileInfo, err := os.Stat(*dir)
+	switch *dburl {
+	case "prod":
+		pathToDb = paths.SqliteProdFile()
+	case "test":
+		pathToDb = paths.SqliteTestFile()
+	default:
+		log.Fatal("test or db")
+	}
+
+	db, err := sql.Open("sqlite3", pathToDb)
+	if err != nil {
+		log.Fatalf("at sql.Open %v", err)
+	}
+
+	queries := database.New(db)
+
+	_, err = os.Stat(*path)
 	if err != nil {
 		log.Fatalf("os.Stat: %v", err)
 	}
 
-	if !fileInfo.IsDir() {
-		log.Fatalf("%v that you pass as an argument for dir is not a dir", dir)
-	}
-
-	files, err := filepath.Glob(*dir + "/*.json")
+	f, err := os.Open(*path)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("at os.Open file %v, %v", *path, err)
 	}
 
-	fmt.Println(files)
-	for _, f := range files {
-		bm, err := serde.DecodeJsonFileToStruct[database.BookModel](f)
-		if err != nil {
-			fmt.Printf("filepath: %v erroed out %v", f, err)
-		}
+	err = addBook(queries, f)
 
-		addParams, err := bm.ParseAndValidate()
-		if err != nil {
-			fmt.Printf("filepath: %v parsing and validation error %v", f, err)
-
-		}
-
-		err = service.Queries.AddBook(context.Background(), addParams)
-		if err != nil {
-			fmt.Printf("filepath: %v adding book in the database %v", f, err)
-		}
-
+	if err != nil {
+		log.Fatalf("at addBook %v", err)
 	}
-	// service.Queries.AddBook(context.Background())
+
+}
+
+func addBook(queries *database.Queries, r io.ReadCloser) error {
+
+	addBookParams, err := database.NewAddBookParams(r)
+	if err != nil {
+		return fmt.Errorf("database.NewAddBookParams(%v), %w", r, err)
+	}
+
+	err = queries.AddBook(context.Background(), addBookParams)
+	if err != nil {
+		return fmt.Errorf("%w", err)
+	}
+
+	return nil
 
 }
