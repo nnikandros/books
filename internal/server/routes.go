@@ -9,6 +9,7 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 	"github.com/go-chi/httplog/v3"
 )
@@ -16,6 +17,7 @@ import (
 func (s *Server) RegisterRoutes() http.Handler {
 
 	r := chi.NewRouter()
+	r.Use(middleware.Recoverer)
 
 	// Request logger
 	r.Use(httplog.RequestLogger(s.logger, &httplog.Options{
@@ -33,7 +35,9 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 		// Optionally, filter out some request logs.
 		Skip: func(req *http.Request, respStatus int) bool {
-			return respStatus == 404 || respStatus == 405
+
+			faviconPath := req.URL.Path == "/favicon.ico"
+			return respStatus == 404 || respStatus == 405 || faviconPath
 		},
 
 		// Optionally, log selected request/response headers explicitly.
@@ -43,7 +47,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 		// Optionally, enable logging of request/response body based on custom conditions.
 		// Useful for debugging payload issues in development.
 		// LogRequestBody:  func(req *http.Request) bool { return false },
-		// LogResponseBody: func(req *http.Request) bool { return false },
+		// LogResponseBody: func(req *http.Request) bool { return true },
 	}))
 
 	r.Use(cors.Handler(cors.Options{
@@ -59,7 +63,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	r.Get("/health", s.healthHandler)
 
-	// r.Mount("/debug", middleware.Profiler())
+	r.Mount("/debug", middleware.Profiler())
 
 	r.Get("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
 
@@ -73,9 +77,12 @@ func (s *Server) RegisterRoutes() http.Handler {
 }
 
 func (s *Server) healthHandler(w http.ResponseWriter, r *http.Request) {
-	jsonResp, _ := json.Marshal(s.db.Health())
-	w.Header().Set("content-type", "application/json")
-	_, _ = w.Write(jsonResp)
+	// panic("fuck")
+	http.Error(w, "fuck off", http.StatusInternalServerError)
+	return
+	// jsonResp, _ := json.Marshal(s.db.Health())
+	// w.Header().Set("content-type", "application/json")
+	// _, _ = w.Write(jsonResp)
 }
 
 func (s *Server) RenderBooksPage(w http.ResponseWriter, r *http.Request) {
