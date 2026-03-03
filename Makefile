@@ -12,10 +12,7 @@ analysis:
 	@go build -gcflags="-m" cmd/api/main.go 
 	
 
-build-addMany:
-	@echo "Buildling"
-	@go build -C cmd/migrations/addMany
-	@mv cmd/migrations/addMany/addMany $(HOME)/.local/bin
+
 
 build-arm:
 	@echo "Cross compiling for arm64..."
@@ -57,12 +54,17 @@ watch:
             fi; \
         fi
 
-.PHONY: all build run test clean watch sync deploy status journal analysis
+.PHONY: all build run test clean watch sync deploy status journal analysis addBook addMany
 
 addMany:
 	@echo "building addMany migrations"
 	@go build -C cmd/migrations/addMany
 	@mv cmd/migrations/addMany/addMany . 
+
+addBook:
+	@echo "building addMany migrations"
+	@go build -C cmd/migrations/addBook
+	@mv cmd/migrations/addBook/addBook . 
 	
 
 

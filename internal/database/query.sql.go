@@ -292,6 +292,34 @@ func (q *Queries) GetBooksByAuthorSortedByPublicationDate(ctx context.Context, a
 	return items, nil
 }
 
+const getDistinctAuthors = `-- name: GetDistinctAuthors :many
+SELECT DISTINCT author
+FROM books
+`
+
+func (q *Queries) GetDistinctAuthors(ctx context.Context) ([]string, error) {
+	rows, err := q.db.QueryContext(ctx, getDistinctAuthors)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []string
+	for rows.Next() {
+		var author string
+		if err := rows.Scan(&author); err != nil {
+			return nil, err
+		}
+		items = append(items, author)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const updateRatingById = `-- name: UpdateRatingById :one
 UPDATE books
 SET rating=?

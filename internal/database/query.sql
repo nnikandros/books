@@ -64,3 +64,7 @@ UPDATE books
 SET rating=?
 WHERE id=?
 RETURNING *;
+
+-- name: GetDistinctAuthors :many
+SELECT DISTINCT author
+FROM books;

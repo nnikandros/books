@@ -2,54 +2,63 @@ package main
 
 import (
 	"books/internal/database"
+	"books/internal/paths"
 	"context"
+	"database/sql"
 	"flag"
 	"fmt"
 	"log"
 	"os"
-	"path/filepath"
 	"serde"
 )
 
 func main() {
 
-	service := database.NewService()
-	dir := flag.String("dir", "", "directory which has the json files")
+	dburl := flag.String("db", "test", "prod or test")
+	var pathToDb string
+
 	flag.Parse()
 
-	fileInfo, err := os.Stat(*dir)
+	args := flag.Args()
+	if len(args) > 1 {
+		log.Fatal("please provide onle one")
+	}
+
+	switch *dburl {
+	case "prod":
+		pathToDb = paths.SqliteProdFile()
+	case "test":
+		pathToDb = paths.SqliteTestFile()
+	default:
+		log.Fatal("test or db")
+	}
+
+	db, err := sql.Open("sqlite3", pathToDb)
 	if err != nil {
-		log.Fatalf("os.Stat: %v", err)
+		log.Fatal(err)
 	}
+	queries := database.New(db)
 
-	if !fileInfo.IsDir() {
-		log.Fatalf("%v that you pass as an argument for dir is not a dir", dir)
-	}
-
-	files, err := filepath.Glob(*dir + "/*.json")
+	f, err := os.Open(flag.Args()[0])
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(files)
-	for _, f := range files {
-		bm, err := serde.DecodeJsonFileToStruct[database.BookModel](f)
-		if err != nil {
-			fmt.Printf("filepath: %v erroed out %v", f, err)
-		}
-
-		addParams, err := bm.ParseAndValidate()
-		if err != nil {
-			fmt.Printf("filepath: %v parsing and validation error %v", f, err)
-
-		}
-
-		err = service.Queries.AddBook(context.Background(), addParams)
-		if err != nil {
-			fmt.Printf("filepath: %v adding book in the database %v", f, err)
-		}
-
+	bookModel, err := serde.DecodeJsonFileToStructV2[database.BookModel](f)
+	if err != nil {
+		log.Fatal(err)
 	}
-	// service.Queries.AddBook(context.Background())
 
+	addParams, err := bookModel.ParseAndValidate()
+
+	err = queries.AddBook(context.Background(), addParams)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	allBooks, err := queries.GetAllBooks(context.Background())
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("All Books updated %+v\n", allBooks)
 }

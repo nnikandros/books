@@ -29,14 +29,10 @@ func main() {
 
 	db, err := sql.Open("sqlite3", pathToDb)
 
-	queries := database.New(db)
-
 	if err != nil {
 		log.Fatal(err)
 	}
-	if err != nil {
-		log.Fatalf("os.Stat: %v", err)
-	}
+	queries := database.New(db)
 
 	bookModels, err := serde.DecodeJsonFileToStruct[[]database.BookModel](paths.BooksJsonFile())
 	if err != nil {
