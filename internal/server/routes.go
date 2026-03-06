@@ -3,8 +3,8 @@ package server
 import (
 	"books/internal/paths"
 	"encoding/json"
+	"fmt"
 	"log"
-	"log/slog"
 	"net/http"
 	"strconv"
 
@@ -20,35 +20,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.Use(middleware.Recoverer)
 
 	// Request logger
-	r.Use(httplog.RequestLogger(s.logger, &httplog.Options{
-
-		Level: slog.LevelInfo,
-
-		// Set log output to Elastic Common Schema (ECS) format.
-		Schema: httplog.SchemaECS,
-
-		// RecoverPanics recovers from panics occurring in the underlying HTTP handlers
-		// and middlewares. It returns HTTP 500 unless response status was already set.
-		//
-		// NOTE: Panics are logged as errors automatically, regardless of this setting.
-		RecoverPanics: true,
-
-		// Optionally, filter out some request logs.
-		Skip: func(req *http.Request, respStatus int) bool {
-
-			faviconPath := req.URL.Path == "/favicon.ico"
-			return respStatus == 404 || respStatus == 405 || faviconPath
-		},
-
-		// Optionally, log selected request/response headers explicitly.
-		LogRequestHeaders:  []string{"Origin"},
-		LogResponseHeaders: []string{},
-
-		// Optionally, enable logging of request/response body based on custom conditions.
-		// Useful for debugging payload issues in development.
-		// LogRequestBody:  func(req *http.Request) bool { return false },
-		// LogResponseBody: func(req *http.Request) bool { return true },
-	}))
+	r.Use(httplog.RequestLogger(s.logger, loggerOptions))
 
 	r.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"https://*", "http://*"},
@@ -78,6 +50,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 func (s *Server) healthHandler(w http.ResponseWriter, r *http.Request) {
 	// panic("fuck")
+	fmt.Printf("%+v", r.Header)
 	http.Error(w, "fuck off", http.StatusInternalServerError)
 	return
 	// jsonResp, _ := json.Marshal(s.db.Health())
