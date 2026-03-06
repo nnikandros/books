@@ -3,7 +3,6 @@ package server
 import (
 	"books/internal/paths"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -49,13 +48,10 @@ func (s *Server) RegisterRoutes() http.Handler {
 }
 
 func (s *Server) healthHandler(w http.ResponseWriter, r *http.Request) {
-	// panic("fuck")
-	fmt.Printf("%+v", r.Header)
-	http.Error(w, "fuck off", http.StatusInternalServerError)
+	jsonResp, _ := json.Marshal(s.db.Health())
+	w.Header().Set("content-type", "application/json")
+	_, _ = w.Write(jsonResp)
 	return
-	// jsonResp, _ := json.Marshal(s.db.Health())
-	// w.Header().Set("content-type", "application/json")
-	// _, _ = w.Write(jsonResp)
 }
 
 func (s *Server) RenderBooksPage(w http.ResponseWriter, r *http.Request) {
