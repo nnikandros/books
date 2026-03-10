@@ -68,3 +68,7 @@ RETURNING *;
 -- name: GetDistinctAuthors :many
 SELECT DISTINCT author
 FROM books;
+
+-- name: Paginate :many
+SELECT * from books
+LIMIT ? OFFSET ?;
