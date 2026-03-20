@@ -14,7 +14,6 @@ import (
 
 func (s *Server) RegisterRoutes() http.Handler {
 	r := chi.NewRouter()
-	// r.Use(middleware.Logger)
 	r.Use(httplog.RequestLogger(s.log, loggerOptions))
 
 	r.Use(cors.Handler(cors.Options{
