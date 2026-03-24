@@ -2,8 +2,9 @@ package database
 
 import (
 	"books/internal/paths"
-	"serde"
 	"testing"
+
+	"github.com/nnikandros/serde"
 )
 
 func TestBookModelJson(t *testing.T) {
