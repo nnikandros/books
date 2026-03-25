@@ -15,6 +15,9 @@ FROM alpine:3.21 AS final
 
 WORKDIR /books
 
+ENV HOST=0.0.0.0
+ENV PORT=8080
+
 COPY --from=builder /books/main .
 COPY --from=builder /books/templates ./templates
 COPY --from=builder /books/prod.db .

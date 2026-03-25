@@ -17,6 +17,7 @@ import (
 )
 
 type Server struct {
+	host      string
 	port      int
 	db        database.Service
 	templates *template.Template
@@ -25,9 +26,11 @@ type Server struct {
 
 func New() *http.Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
+	host := os.Getenv("HOST")
 	t := template.Must(template.New("book_templates").Funcs(template.FuncMap{"formatTime": formatTime}).ParseGlob("templates/*"))
 
 	NewServer := &Server{
+		host:      host,
 		port:      port,
 		db:        database.NewService(),
 		templates: t,
@@ -36,7 +39,7 @@ func New() *http.Server {
 
 	// Declare Server config
 	server := &http.Server{
-		Addr:         fmt.Sprintf("0.0.0.0:%d", NewServer.port),
+		Addr:         fmt.Sprintf("%s:%d", NewServer.host, NewServer.port),
 		Handler:      NewServer.RegisterRoutes(),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,

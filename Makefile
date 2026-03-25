@@ -5,7 +5,7 @@ all: build test
 
 build:
 	@echo "Building..."
-	@go build -o main cmd/api/main.go
+	@go build -o books cmd/api/main.go
 
 analysis:
 	@echo "Escape analysis"
@@ -19,7 +19,7 @@ build-addMany:
 
 build-arm:
 	@echo "Cross compiling for arm64..."
-	@GOOS=linux GOARCH=arm64 CC=aarch64-linux-gnu-gcc go build -o main cmd/api/main.go
+	@GOOS=linux GOARCH=arm64 CC=aarch64-linux-gnu-gcc go build -o books cmd/api/main.go
 
 
 # Run the application
