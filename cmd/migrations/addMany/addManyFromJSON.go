@@ -8,7 +8,8 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"serde"
+
+	"github.com/nnikandros/serde"
 )
 
 func main() {
