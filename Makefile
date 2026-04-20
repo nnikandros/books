@@ -72,7 +72,7 @@ sync: build-arm
 
 reload:
 	@echo "reloading service"
-	@echo $(APP_RUNNER_PASSWORD) | ssh hetzner-app-runner -t sudo -S systemctl reload books.service 2> /dev/null
+	@echo ${APP_RUNNER_PASSWORD} | ssh hetzner-app-runner -t sudo -S systemctl reload books.service 2> /dev/null
 
 
 status:

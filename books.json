@@ -87,5 +87,12 @@
         "finished-date": "2014-08-12",
         "rating": "5/5",
         "uri-thumbnail": "https://upload.wikimedia.org/wikipedia/commons/a/ad/The_Grapes_of_Wrath_%281939_1st_ed_cover%29.jpg"
+    },
+    {
+        "title": "Armageddon in Retrospect",
+        "author": "Kurt Vonnegut",
+        "finished-date": "2026-04-17",
+        "rating": "2/5",
+        "uri-thumbnail": "https://upload.wikimedia.org/wikipedia/en/f/f9/Armageddon_in_retrospect.jpg"
     }
 ]
