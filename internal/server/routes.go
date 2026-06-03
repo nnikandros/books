@@ -37,7 +37,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	})
 
 	booksAPI := BooksAPIRouter{db: s.db}
-	r.Mount("/api", booksAPI.Routes())
+	r.Mount("/api/v1", booksAPI.Routes())
 
 	return r
 }

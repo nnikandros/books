@@ -18,13 +18,10 @@ type BooksAPIRouter struct {
 func (b *BooksAPIRouter) Routes() chi.Router {
 	r := chi.NewRouter()
 
-	r.Route("/v1", func(r chi.Router) {
-		r.Get("/", b.ListBooks)         // GET /books/api
-		r.Post("/", b.CreateBook)       // POST /books/api
-		r.Get("/{id}", b.GetBook)       // GET /books/{id}
-		r.Delete("/{id}", b.DeleteBook) // DELETE /books/{id}
-
-	})
+	r.Get("/", b.ListBooks)         // GET /books/api
+	r.Post("/", b.CreateBook)       // POST /books/api
+	r.Get("/{id}", b.GetBook)       // GET /books/{id}
+	r.Delete("/{id}", b.DeleteBook) // DELETE /books/{id}
 
 	return r
 }
