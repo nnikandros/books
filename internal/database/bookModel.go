@@ -3,8 +3,9 @@ package database
 import (
 	"fmt"
 	"io"
-	"serde"
 	"time"
+
+	"github.com/nnikandros/serde"
 )
 
 type BookModel struct {

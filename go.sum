@@ -10,6 +10,8 @@ github.com/ncruces/go-sqlite3 v0.30.1 h1:pHC3YsyRdJv4pCMB4MO1Q2BXw/CAa+Hoj7GSaKt
 github.com/ncruces/go-sqlite3 v0.30.1/go.mod h1:UVsWrQaq1qkcal5/vT5lOJnZCVlR5rsThKdwidjFsKc=
 github.com/ncruces/julianday v1.0.0 h1:fH0OKwa7NWvniGQtxdJRxAgkBMolni2BjDHaWTxqt7M=
 github.com/ncruces/julianday v1.0.0/go.mod h1:Dusn2KvZrrovOMJuOt0TNXL6tB7U2E8kvza5fFc9G7g=
+github.com/nnikandros/serde v0.1.1 h1:HQXTWBv3810BmoPJ6GBQUt/0hHIocQSePoRWJC/JZPc=
+github.com/nnikandros/serde v0.1.1/go.mod h1:2zauDVv1xm44DNJ5FQNpV/F9LlfpgpAsnWm4TaKTJ/g=
 github.com/tetratelabs/wazero v1.10.0 h1:CXP3zneLDl6J4Zy8N/J+d5JsWKfrjE6GtvVK1fpnDlk=
 github.com/tetratelabs/wazero v1.10.0/go.mod h1:DRm5twOQ5Gr1AoEdSi0CLjDQF1J9ZAuyqFIjl1KKfQU=
 golang.org/x/sys v0.38.0 h1:3yZWxaJjBmCWXqhN1qh02AkOnCQ1poK6oF+a7xWL6Gc=

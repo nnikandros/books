@@ -8,6 +8,7 @@ require (
 	github.com/go-chi/httplog/v3 v3.3.0
 	github.com/joho/godotenv v1.5.1
 	github.com/ncruces/go-sqlite3 v0.30.1
+	github.com/nnikandros/serde v0.1.1
 )
 
 require (

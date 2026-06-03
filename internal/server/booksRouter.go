@@ -3,9 +3,10 @@ package server
 import (
 	"books/internal/database"
 	"net/http"
-	"serde"
 	"strconv"
 	"time"
+
+	"github.com/nnikandros/serde"
 
 	"github.com/go-chi/chi/v5"
 )
