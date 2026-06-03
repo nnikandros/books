@@ -1,3 +1,8 @@
 addBook
 addMany
 books.json
+.env
+Makefile
+README.md
+
+test.db

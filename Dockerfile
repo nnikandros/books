@@ -17,13 +17,14 @@ WORKDIR /books
 
 ENV HOST=0.0.0.0
 ENV PORT=8080
+ENV BLUEPRINT_DB_URL="/books/prod.db"
+ENV APP_ENV=prod
 
 COPY --from=builder /books/main .
 COPY --from=builder /books/templates ./templates
 COPY --from=builder /books/prod.db .
-COPY --from=builder /books/.env .
 
 
-EXPOSE 8080
+EXPOSE 80
 
-CMD [ "/books/main" ]
+ENTRYPOINT  [ "/books/main" ]
