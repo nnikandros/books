@@ -178,15 +178,14 @@ func (q *Queries) GetBooksByAuthor(ctx context.Context, author string) ([]Book, 
 	return items, nil
 }
 
-const getBooksByAuthorSortedByFinishedDate = `-- name: GetBooksByAuthorSortedByFinishedDate :many
+const getBooksSortedByFinishedDateAsc = `-- name: GetBooksSortedByFinishedDateAsc :many
 SELECT id, title, author, finished_date, rating, uri_thumbnail, review
 FROM books
-WHERE author=?
 ORDER BY finished_date ASC
 `
 
-func (q *Queries) GetBooksByAuthorSortedByFinishedDate(ctx context.Context, author string) ([]Book, error) {
-	rows, err := q.db.QueryContext(ctx, getBooksByAuthorSortedByFinishedDate, author)
+func (q *Queries) GetBooksSortedByFinishedDateAsc(ctx context.Context) ([]Book, error) {
+	rows, err := q.db.QueryContext(ctx, getBooksSortedByFinishedDateAsc)
 	if err != nil {
 		return nil, err
 	}
@@ -216,53 +215,14 @@ func (q *Queries) GetBooksByAuthorSortedByFinishedDate(ctx context.Context, auth
 	return items, nil
 }
 
-const getBooksByAuthorSortedByFinishedDatev2 = `-- name: GetBooksByAuthorSortedByFinishedDatev2 :many
+const getBooksSortedByFinishedDateDesc = `-- name: GetBooksSortedByFinishedDateDesc :many
 SELECT id, title, author, finished_date, rating, uri_thumbnail, review
 FROM books
-WHERE author=?
 ORDER BY finished_date DESC
 `
 
-func (q *Queries) GetBooksByAuthorSortedByFinishedDatev2(ctx context.Context, author string) ([]Book, error) {
-	rows, err := q.db.QueryContext(ctx, getBooksByAuthorSortedByFinishedDatev2, author)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	var items []Book
-	for rows.Next() {
-		var i Book
-		if err := rows.Scan(
-			&i.ID,
-			&i.Title,
-			&i.Author,
-			&i.FinishedDate,
-			&i.Rating,
-			&i.UriThumbnail,
-			&i.Review,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
-const getBooksByAuthorSortedByPublicationDate = `-- name: GetBooksByAuthorSortedByPublicationDate :many
-SELECT id, title, author, finished_date, rating, uri_thumbnail, review
-FROM books
-WHERE author=?
-ORDER BY publication_date
-`
-
-func (q *Queries) GetBooksByAuthorSortedByPublicationDate(ctx context.Context, author string) ([]Book, error) {
-	rows, err := q.db.QueryContext(ctx, getBooksByAuthorSortedByPublicationDate, author)
+func (q *Queries) GetBooksSortedByFinishedDateDesc(ctx context.Context) ([]Book, error) {
+	rows, err := q.db.QueryContext(ctx, getBooksSortedByFinishedDateDesc)
 	if err != nil {
 		return nil, err
 	}

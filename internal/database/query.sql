@@ -21,25 +21,21 @@ SELECT *
 FROM books
 WHERE author=?;
 
--- name: GetBooksByAuthorSortedByPublicationDate :many
+
+
+
+
+
+-- name: GetBooksSortedByFinishedDateAsc :many
 SELECT *
 FROM books
-WHERE author=?
-ORDER BY publication_date;
-
-
-
--- name: GetBooksByAuthorSortedByFinishedDate :many
-SELECT *
-FROM books
-WHERE author=?
 ORDER BY finished_date ASC;
 
--- name: GetBooksByAuthorSortedByFinishedDatev2 :many
+-- name: GetBooksSortedByFinishedDateDesc :many
 SELECT *
 FROM books
-WHERE author=?
 ORDER BY finished_date DESC;
+
 
 -- name: GetBookById :one
 SELECT *
