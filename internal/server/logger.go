@@ -41,7 +41,7 @@ var loggerOptions = &httplog.Options{
 	Skip: func(req *http.Request, respStatus int) bool {
 
 		faviconPath := req.URL.Path == "/favicon.ico"
-		return respStatus == 404 || respStatus == 405 || faviconPath
+		return faviconPath
 	},
 
 	// Optionally, log selected request/response headers explicitly.

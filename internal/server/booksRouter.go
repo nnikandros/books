@@ -2,6 +2,8 @@ package server
 
 import (
 	"books/internal/database"
+	"database/sql"
+	"errors"
 	"net/http"
 	"strconv"
 	"time"
@@ -18,10 +20,10 @@ type BooksAPIRouter struct {
 func (b *BooksAPIRouter) Routes() chi.Router {
 	r := chi.NewRouter()
 
-	r.Get("/", b.ListBooks)         // GET /books/api
-	r.Post("/", b.CreateBook)       // POST /books/api
-	r.Get("/{id}", b.GetBook)       // GET /books/{id}
-	r.Delete("/{id}", b.DeleteBook) // DELETE /books/{id}
+	r.Get("/", b.ListBooks)         // GET /api
+	r.Post("/", b.CreateBook)       // POST /api
+	r.Get("/{id}", b.GetBook)       // GET /api{id}
+	r.Delete("/{id}", b.DeleteBook) // DELETE /api/{id}
 
 	return r
 }
@@ -71,10 +73,17 @@ func (b *BooksAPIRouter) GetBook(w http.ResponseWriter, r *http.Request) {
 	}
 
 	book, err := b.db.Queries.GetBookById(r.Context(), int64(id))
-	if err != nil {
-		http.Error(w, "error while executign the query", http.StatusInternalServerError)
+
+	if errors.Is(err, sql.ErrNoRows) {
+		http.Error(w, "Book Not Found", http.StatusNotFound)
 		return
 	}
+
+	if err != nil {
+		http.Error(w, "error while executing the query", http.StatusInternalServerError)
+		return
+	}
+
 	err = serde.EncodeJson(w, http.StatusOK, book)
 	if err != nil {
 		http.Error(w, "error while serializing", http.StatusInternalServerError)
