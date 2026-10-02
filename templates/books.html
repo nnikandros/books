@@ -108,6 +108,7 @@
                 <th>Title</th>
                 <th>Author</th>
                 <th>Rating</th>
+                <th>Date Finished</th>
             </tr>
         </thead>
         <tbody>
@@ -116,6 +117,7 @@
                 <td><a href="/{{.ID}}">{{.Title}}</a></td>
                 <td>{{.Author}}</td>
                 <td>{{.Rating}}</td>
+                <td>{{.FinishedDate | formatTime}}</td>
             </tr>
             {{end}}
         </tbody>
@@ -123,6 +125,10 @@
     {{else}}
     <p class="no-books">No books found.</p>
     {{end}}
+
+    <footer>
+        <p>Last Updated On: </p>
+    </footer>
 
 
 </body>
