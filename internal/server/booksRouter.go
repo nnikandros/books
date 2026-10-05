@@ -4,7 +4,6 @@ import (
 	"books/internal/database"
 	"database/sql"
 	"errors"
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -30,15 +29,6 @@ func (b *BooksAPIRouter) Routes() chi.Router {
 }
 
 func (b *BooksAPIRouter) ListBooks(w http.ResponseWriter, r *http.Request) {
-
-	s := r.URL.Query().Get("sortByDate")
-
-	fmt.Println(s)
-	if s != "" {
-		w.Write([]byte(s))
-		return
-
-	}
 
 	l, err := b.db.Queries.GetAllBooks(r.Context())
 	if err != nil {
