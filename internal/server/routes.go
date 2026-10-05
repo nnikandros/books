@@ -55,7 +55,7 @@ func (s *Server) RenderBooksPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := s.templates.ExecuteTemplate(w, "books.html", books); err != nil {
+	if err := s.templates.ExecuteTemplate(w, "books.gohtml", books); err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 	}
 
@@ -74,7 +74,7 @@ func (s *Server) RenderDetailsPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := s.templates.ExecuteTemplate(w, "book_detail.html", book); err != nil {
+	if err := s.templates.ExecuteTemplate(w, "book_detail.gohtml", book); err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 	}
 
